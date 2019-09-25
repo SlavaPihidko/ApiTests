@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+apply plugin: 'application'
+mainClassName = "Hello"
+
+repositories{
+    mavenCentral()
+}
+
+configurations {
+    agent
+}
+
+dependencies{
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
