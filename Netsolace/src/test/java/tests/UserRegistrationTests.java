@@ -4,11 +4,12 @@ import model.UserRegistration;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class UserRegistrationTests extends TestBase {
 
     @Test
-    public void checkUserRegistrationAllValidFields() throws IOException {
+    public void checkUserRegistrationAllValidFields() throws IOException, URISyntaxException {
         String msg = "success";
         UserRegistration user1 = new UserRegistration()
                                     .withFirstName("Slava")
