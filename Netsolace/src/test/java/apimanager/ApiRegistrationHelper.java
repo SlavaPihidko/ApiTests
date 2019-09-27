@@ -49,7 +49,7 @@ public class ApiRegistrationHelper extends ApiHelperBase {
                         "\"email\": \""+ user1.getEmail()+"\"," +
                         "\"phone\": \""+ user1.getPhone()+"\"," +
                         "\"password\": \""+ user1.getPassword()+"\"}";
-        System.out.println("\""+user1.getEmail()+"\"");
+        //System.out.println("\""+user1.getEmail()+"\"");
         System.out.println("json " + json);
 
 
