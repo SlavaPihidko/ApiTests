@@ -9,6 +9,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -42,7 +43,14 @@ public class ApiRegistrationHelper extends ApiHelperBase {
         postRequest.setHeader("Content-Type", "application/json");
         postRequest.setHeader("apikey", "NLdu-FEUbU-CCrd-otTWYJGhDfZZKYHAxVd-QksZEMMtCUkUKk");
 
-        String json = "{ \"lastName\": \"Тестер\",\"firstName\": \"Маша\",\"refStoreId\": 62,\"email\": \"slava17puh57@gmail.com\",\"phone\": \"+79036788778\",\"password\": \"qwertyU1\"}";
+        String json = "{ \"lastName\": \""+ user1.getLastName()+ "\"," +
+                        "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                        "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                        "\"email\": \""+ user1.getEmail()+"\"," +
+                        "\"phone\": \""+ user1.getPhone()+"\"," +
+                        "\"password\": \""+ user1.getPassword()+"\"}";
+        System.out.println("\""+user1.getEmail()+"\"");
+        System.out.println("json " + json);
 
 
         HttpEntity entity = new ByteArrayEntity(json.getBytes("UTF-8"));
