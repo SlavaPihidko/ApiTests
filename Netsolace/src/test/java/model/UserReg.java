@@ -1,6 +1,6 @@
 package model;
 
-public class UserRegistration {
+public class UserReg {
 
     private String lastName;
     private String firstName;
@@ -13,7 +13,7 @@ public class UserRegistration {
         return lastName;
     }
 
-    public UserRegistration withLastName(String lastName) {
+    public UserReg withLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -22,7 +22,7 @@ public class UserRegistration {
         return firstName;
     }
 
-    public UserRegistration withFirstName(String firstName) {
+    public UserReg withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -31,7 +31,7 @@ public class UserRegistration {
         return refStoreId;
     }
 
-    public UserRegistration withRefStoreId(int refStoreId) {
+    public UserReg withRefStoreId(int refStoreId) {
         this.refStoreId = refStoreId;
         return this;
     }
@@ -40,7 +40,7 @@ public class UserRegistration {
         return email;
     }
 
-    public UserRegistration withEmail(String email) {
+    public UserReg withEmail(String email) {
         this.email = email;
         return this;
     }
@@ -49,7 +49,7 @@ public class UserRegistration {
         return phone;
     }
 
-    public UserRegistration withPhone(String phone) {
+    public UserReg withPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -58,7 +58,7 @@ public class UserRegistration {
         return password;
     }
 
-    public UserRegistration withPassword(String password) {
+    public UserReg withPassword(String password) {
         this.password = password;
         return this;
     }
@@ -78,9 +78,9 @@ public class UserRegistration {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserRegistration)) return false;
+        if (!(o instanceof UserReg)) return false;
 
-        UserRegistration that = (UserRegistration) o;
+        UserReg that = (UserReg) o;
 
         if (getRefStoreId() != that.getRefStoreId()) return false;
         if (getLastName() != null ? !getLastName().equals(that.getLastName()) : that.getLastName() != null)

@@ -1,6 +1,6 @@
 package apimanager;
 
-import model.UserRegistration;
+import model.UserReg;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 
 public class ApiRegistrationHelper extends ApiHelperBase {
 
-    public void setRegistrationData(UserRegistration user1) throws IOException, URISyntaxException {
+    public void setRegData(UserReg user1) throws IOException, URISyntaxException {
 
         //Рабочий метод, если нет инта в параметрах запроса.
         /*CloseableHttpClient client = HttpClients.createDefault();
