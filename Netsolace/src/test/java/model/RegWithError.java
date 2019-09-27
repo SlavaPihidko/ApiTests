@@ -2,15 +2,15 @@ package model;
 
 public class RegWithError {
 
-    private String status;
+    private Boolean status;
     private String message;
     private String stringCode;
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public RegWithError withStatus(String status) {
+    public RegWithError withStatus(Boolean status) {
         this.status = status;
         return this;
     }
@@ -36,7 +36,7 @@ public class RegWithError {
     @Override
     public String toString() {
         return "RegWithError{" +
-                "status='" + status + '\'' +
+                "status=" + status +
                 ", message='" + message + '\'' +
                 ", stringCode='" + stringCode + '\'' +
                 '}';

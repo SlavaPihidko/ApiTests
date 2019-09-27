@@ -1,5 +1,6 @@
 package apimanager;
 
+import model.RegWithError;
 import model.UserReg;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -12,10 +13,15 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class ApiRegistrationHelper extends ApiHelperBase {
 
-    public void setRegData(UserReg user1) throws IOException, URISyntaxException {
+    public RegWithError setRegData(UserReg user1) throws IOException, URISyntaxException, ParseException {
 
         //Рабочий метод, если нет инта в параметрах запроса.
         /*CloseableHttpClient client = HttpClients.createDefault();
@@ -62,6 +68,34 @@ public class ApiRegistrationHelper extends ApiHelperBase {
         HttpEntity entity2 = responseHeader.getEntity();
         String responseBody = EntityUtils.toString(entity2);
         System.out.println("responseBody" + responseBody);
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject)jsonParser.parse(responseBody);
+
+//        RegWithError regWithError =
+//                new Gson().fromJson(responseBody, new TypeToken<RegWithError>(){}.getType());
+
+//        RegWithError regWithError2 =
+//                new Gson().fromJson(parsed, new TypeToken<RegWithError>(){}.getType());
+        Boolean status = (Boolean) jsonObject.get("status");
+
+        System.out.println(status);
+
+        JSONArray errors = (JSONArray) jsonObject.get("errors");
+        JSONObject innerObj = (JSONObject) errors.iterator().next();
+
+
+        System.out.println(innerObj.get("message"));
+        System.out.println(innerObj.get("stringCode"));
+
+        RegWithError regWithErrorResponse = new RegWithError()
+                                             .withStatus((Boolean) jsonObject.get("status"))
+                                             .withMessage((String) innerObj.get("message"))
+                                             .withStringCode((String) innerObj.get("stringCode"));
+
+        System.out.println("regWithErrorResponse " + regWithErrorResponse);
+
+        return regWithErrorResponse;
 
     }
 }
