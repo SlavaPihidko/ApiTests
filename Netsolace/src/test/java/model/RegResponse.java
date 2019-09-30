@@ -1,6 +1,6 @@
 package model;
 
-public class RegWithError {
+public class RegResponse {
 
     private Boolean status;
     private String message;
@@ -10,7 +10,7 @@ public class RegWithError {
         return status;
     }
 
-    public RegWithError withStatus(Boolean status) {
+    public RegResponse withStatus(Boolean status) {
         this.status = status;
         return this;
     }
@@ -19,7 +19,7 @@ public class RegWithError {
         return message;
     }
 
-    public RegWithError withMessage(String message) {
+    public RegResponse withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -28,14 +28,14 @@ public class RegWithError {
         return stringCode;
     }
 
-    public RegWithError withStringCode(String stringCode) {
+    public RegResponse withStringCode(String stringCode) {
         this.stringCode = stringCode;
         return this;
     }
 
     @Override
     public String toString() {
-        return "RegWithError{" +
+        return "RegResponse{" +
                 "status=" + status +
                 ", message='" + message + '\'' +
                 ", stringCode='" + stringCode + '\'' +
@@ -45,9 +45,9 @@ public class RegWithError {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RegWithError)) return false;
+        if (!(o instanceof RegResponse)) return false;
 
-        RegWithError that = (RegWithError) o;
+        RegResponse that = (RegResponse) o;
 
         if (getStatus() != null ? !getStatus().equals(that.getStatus()) : that.getStatus() != null) return false;
         if (getMessage() != null ? !getMessage().equals(that.getMessage()) : that.getMessage() != null) return false;

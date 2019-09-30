@@ -2,13 +2,13 @@ package apimanager;
 
 public class ApiManager {
 
-    private ApiRegistrationHelper apiRegistrationHelper;
+    private ApiRegHelper apiRegHelper;
 
     public void dealWithApi() {
-        apiRegistrationHelper = new ApiRegistrationHelper();
+        apiRegHelper = new ApiRegHelper();
     }
 
-    public ApiRegistrationHelper getApiRegistrationHelper() {
-        return apiRegistrationHelper;
+    public ApiRegHelper getApiRegHelper() {
+        return apiRegHelper;
     }
 }

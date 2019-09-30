@@ -1,8 +1,7 @@
 package tests;
 
-import model.RegWithError;
+import model.RegResponse;
 import model.UserReg;
-import org.json.simple.parser.ParseException;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -13,7 +12,8 @@ import static org.testng.Assert.assertEquals;
 public class UserRegTests extends TestBase {
 
     @Test
-    public void checkUserRegistrationAllValidFields() throws IOException, URISyntaxException, ParseException {
+    public void checkUserReg_1() throws IOException, URISyntaxException {
+
         UserReg user1 = new UserReg()
                                     .withFirstName("Slava")
                                     .withLastName("Test")
@@ -21,14 +21,16 @@ public class UserRegTests extends TestBase {
                                     .withPhone("+79036788778")
                                     .withEmail("slava17puh56@gmail.com")
                                     .withPassword("qwertyU1");
-        RegWithError regWithErrorResponse = am.getApiRegistrationHelper().setRegData(user1);
-        RegWithError regWithErrorExpected = new RegWithError()
-                .withStatus(false)
-                .withMessage("Sorry, this login already exists")
-                .withStringCode("LOGIN_ERROR");
 
-        System.out.println("regWithErrorExpected " + regWithErrorExpected);
+        RegResponse regResponseExpected = new RegResponse()
+                                          .withStatus(false)
+                                          .withMessage("Sorry, this login already exists")
+                                          .withStringCode("LOGIN_ERROR");
 
-        assertEquals(regWithErrorResponse,regWithErrorExpected);
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user1);
+
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(regResponseFromApi, regResponseExpected);
     }
 }
