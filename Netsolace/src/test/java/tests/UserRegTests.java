@@ -14,7 +14,6 @@ public class UserRegTests extends TestBase {
 
     @Test
     public void checkUserRegistrationAllValidFields() throws IOException, URISyntaxException, ParseException {
-        String msg = "success";
         UserReg user1 = new UserReg()
                                     .withFirstName("Slava")
                                     .withLastName("Test")
