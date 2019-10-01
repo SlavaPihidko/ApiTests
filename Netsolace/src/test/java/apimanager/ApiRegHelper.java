@@ -52,9 +52,14 @@ public class ApiRegHelper extends ApiHelperBase {
         CloseableHttpResponse responseHeader = client.execute(postRequest);
         System.out.println("responseHeader" + responseHeader);
 
+        System.out.println("StatusCode " + responseHeader.getStatusLine().getStatusCode());
+        responseHeader.getStatusLine().getStatusCode();
+
         HttpEntity entity2 = responseHeader.getEntity();
         String responseBody = EntityUtils.toString(entity2);
         System.out.println("responseBody" + responseBody);
+
+
 
         RegResponse regResponse1 =
                 new Gson().fromJson(responseBody, new TypeToken<RegResponse>(){}.getType());
@@ -83,6 +88,38 @@ public class ApiRegHelper extends ApiHelperBase {
         System.out.println("regResponse " + regResponse);
 
         return regResponse;
+
+    }
+
+    public int getRegStatusCodeFromApi(UserReg user1) throws IOException, URISyntaxException {
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        URIBuilder uriBuilder = new URIBuilder("https://api.leroymerlin.ru/mobile/user/register");
+
+        HttpPost postRequest = new HttpPost(uriBuilder.build());
+        postRequest.setHeader("Content-Type", "application/json");
+        postRequest.setHeader("apikey", "NLdu-FEUbU-CCrd-otTWYJGhDfZZKYHAxVd-QksZEMMtCUkUKk");
+
+        String json = "{ \"lastName\": \""+ user1.getLastName()+ "\"," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail()+"\"," +
+                "\"phone\": \""+ user1.getPhone()+"\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+        System.out.println("json " + json);
+
+
+        HttpEntity entity = new ByteArrayEntity(json.getBytes("UTF-8"));
+        postRequest.setEntity(entity);
+
+        CloseableHttpResponse responseHeader = client.execute(postRequest);
+        System.out.println("responseHeader" + responseHeader);
+
+        System.out.println("StatusCode " + responseHeader.getStatusLine().getStatusCode());
+        int statusCode = responseHeader.getStatusLine().getStatusCode();
+
+        return statusCode;
 
     }
 }

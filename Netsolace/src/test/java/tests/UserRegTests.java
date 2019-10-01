@@ -27,10 +27,13 @@ public class UserRegTests extends TestBase {
                                           .withMessage("Sorry, this login already exists")
                                           .withStringCode("LOGIN_ERROR");
 
-        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user1);
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user1);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
 
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user1);
         System.out.println("regResponseExpected " + regResponseExpected);
 
+        assertEquals(statusCodeFromApi,(400));
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 }
