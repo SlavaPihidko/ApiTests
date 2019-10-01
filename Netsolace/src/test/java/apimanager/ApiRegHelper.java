@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import model.RegResponse;
 import model.UserReg;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -120,6 +121,14 @@ public class ApiRegHelper extends ApiHelperBase {
         int statusCode = responseHeader.getStatusLine().getStatusCode();
 
         return statusCode;
+
+    }
+
+    public String getRandomeString() {
+
+
+            String generatedstring= RandomStringUtils.randomAlphabetic(8);
+            return(generatedstring);
 
     }
 }
