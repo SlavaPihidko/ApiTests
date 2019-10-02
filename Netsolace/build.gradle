@@ -29,3 +29,9 @@ dependencies{
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+test {
+    useTestNG {
+        suites 'src/test/resources/UserRegTestNG.xml'
+    }
+}
