@@ -75,6 +75,7 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
+    //FirstName
     @Test // Registration check. FirstName is empty.
     public void checkUserReg_3() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName is empty.");
@@ -242,6 +243,181 @@ public class UserRegTests extends TestBase {
         System.out.println("statusCodeFromApi " + statusCodeFromApi);
 
         RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    //LastName
+    @Test // Registration check. LastName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$
+    public void checkUserReg_10() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. LastName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("Slava Слава --Ёё")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test // Registration check. LastName has 50 symbols
+    public void checkUserReg_11() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. LastName has 50 symbols");
+        String lastName = "slavaslavaslavaslavaslavaslavaslavaslavaslavaslava";
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName(lastName)
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test // Registration check. LastName has 51 symbols
+    public void checkUserReg_12() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. LastName has 51 symbols");
+        String lastName = "slavaslavaslavaslavaslavaslavaslavaslavaslavaslavaw";
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName(lastName)
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Move failed (registration)")
+                .withStringCode("MOVE_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (409));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. LastName has not matching symbols
+    public void checkUserReg_13() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. LastName has not matching symbols");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("1234567890_=+)(*&^%$#@!{}?><,./|")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Move failed (registration)")
+                .withStringCode("MOVE_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (409));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. LastName has only space symbol(s)
+    public void checkUserReg_14() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. LastName has only space symbol(s)");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("  ")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Move failed (registration)")
+                .withStringCode("MOVE_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (409));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. LastName is empty.
+    public void checkUserReg_15() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. LasttName is empty.");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Move failed (registration)")
+                .withStringCode("MOVE_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (409));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+
+
+    @Test // Registration check. Request without LastName.
+    public void checkUserReg_16() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Request without LastName.");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeWithoutLastNameFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseWithoutLastNameFromApi(user3);
         System.out.println("regResponseExpected " + regResponseExpected);
 
         assertEquals(statusCodeFromApi, (400));
