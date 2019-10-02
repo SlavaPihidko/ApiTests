@@ -2,6 +2,8 @@ package tests;
 
 import model.RegResponse;
 import model.UserReg;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -11,13 +13,19 @@ import static org.testng.Assert.assertEquals;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class UserRegTests extends TestBase {
+    String email;
+
+    @BeforeMethod
+    public String getRandomEmail() {
+    String randomString = am.getApiRegHelper().getRandomeString();
+     email = randomString + "@gmail.com";
+    System.out.println(email);
+    return email;
+    }
 
     @Test // Registration check. Adding uniq user. Successful registration.
     public void checkUserReg_1() throws IOException, URISyntaxException {
-
-        String randomeString = am.getApiRegHelper().getRandomeString();
-        String email = randomeString + "@gmail.com";
-        System.out.println(email);
+        System.out.println("// Registration check. Adding uniq user. Successful registration.");
 
         UserReg user2 = new UserReg()
                 .withFirstName("Slava")
@@ -42,6 +50,7 @@ public class UserRegTests extends TestBase {
 
     @Test //Registration check. User already exist in DB.
     public void checkUserReg_2() throws IOException, URISyntaxException {
+        System.out.println("//Registration check. User already exist in DB.");
 
         UserReg user1 = new UserReg()
                 .withFirstName("Slava")
@@ -68,10 +77,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. FirstName is empty.
     public void checkUserReg_3() throws IOException, URISyntaxException {
-
-        String randomeString = am.getApiRegHelper().getRandomeString();
-        String email = randomeString + "@gmail.com";
-        System.out.println(email);
+        System.out.println("// Registration check. FirstName is empty.");
 
         UserReg user3 = new UserReg()
                 .withFirstName("")
@@ -98,6 +104,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. FirstName has 101 symbols
     public void checkUserReg_4() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. FirstName has 101 symbols");
 
         String randomeString = am.getApiRegHelper().getRandomeString();
         String email = randomeString + "@gmail.com";
@@ -129,10 +136,9 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. FirstName has 100 symbols
     public void checkUserReg_5() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. FirstName has 100 symbols");
+        System.out.println("");
 
-        String randomeString = am.getApiRegHelper().getRandomeString();
-        String email = randomeString + "@gmail.com";
-        System.out.println(email);
         String name = "slavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslava";
 
         UserReg user3 = new UserReg()
@@ -151,10 +157,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. FirstName has only space symbol(s)
     public void checkUserReg_6() throws IOException, URISyntaxException {
-
-        String randomeString = am.getApiRegHelper().getRandomeString();
-        String email = randomeString + "@gmail.com";
-        System.out.println(email);
+        System.out.println("// Registration check. FirstName has only space symbol(s)");
 
         UserReg user3 = new UserReg()
                 .withFirstName("  ")
@@ -181,10 +184,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. FirstName has space symbols between characters
     public void checkUserReg_7() throws IOException, URISyntaxException {
-
-        String randomeString = am.getApiRegHelper().getRandomeString();
-        String email = randomeString + "@gmail.com";
-        System.out.println(email);
+        System.out.println("// Registration check. FirstName has space symbols between characters");
 
         UserReg user3 = new UserReg()
                 .withFirstName("slava bla bla")
@@ -203,10 +203,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. FirstName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$
     public void checkUserReg_8() throws IOException, URISyntaxException {
-
-        String randomeString = am.getApiRegHelper().getRandomeString();
-        String email = randomeString + "@gmail.com";
-        System.out.println(email);
+        System.out.println("// Registration check. FirstName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$");
 
         UserReg user3 = new UserReg()
                 .withFirstName("Slava Слава --Ёё")
@@ -224,10 +221,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. FirstName has not matching symbols
     public void checkUserReg_9() throws IOException, URISyntaxException {
-
-        String randomeString = am.getApiRegHelper().getRandomeString();
-        String email = randomeString + "@gmail.com";
-        System.out.println(email);
+        System.out.println("// Registration check. FirstName has not matching symbols");
 
         UserReg user3 = new UserReg()
                 .withFirstName("1234567890_=+)(*&^%$#@!{}?><,./|")
