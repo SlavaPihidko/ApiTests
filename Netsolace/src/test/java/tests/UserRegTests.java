@@ -77,7 +77,7 @@ public class UserRegTests extends TestBase {
 
     //FirstName
     @Test // Registration check. FirstName is empty.
-    public void checkUserReg_3() throws IOException, URISyntaxException {
+    public void checkUserReg_3_1() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName is empty.");
 
         UserReg user3 = new UserReg()
@@ -104,7 +104,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. FirstName has 101 symbols
-    public void checkUserReg_4() throws IOException, URISyntaxException {
+    public void checkUserReg_3_2() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has 101 symbols");
 
         String randomeString = am.getApiRegHelper().getRandomeString();
@@ -136,7 +136,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. FirstName has 100 symbols
-    public void checkUserReg_5() throws IOException, URISyntaxException {
+    public void checkUserReg_3_3() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has 100 symbols");
         System.out.println("");
 
@@ -157,7 +157,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. FirstName has only space symbol(s)
-    public void checkUserReg_6() throws IOException, URISyntaxException {
+    public void checkUserReg_3_4() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has only space symbol(s)");
 
         UserReg user3 = new UserReg()
@@ -184,7 +184,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. FirstName has space symbols between characters
-    public void checkUserReg_7() throws IOException, URISyntaxException {
+    public void checkUserReg_3_5() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has space symbols between characters");
 
         UserReg user3 = new UserReg()
@@ -203,7 +203,7 @@ public class UserRegTests extends TestBase {
 
 
     @Test // Registration check. FirstName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$
-    public void checkUserReg_8() throws IOException, URISyntaxException {
+    public void checkUserReg_3_6() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$");
 
         UserReg user3 = new UserReg()
@@ -221,7 +221,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. FirstName has not matching symbols
-    public void checkUserReg_9() throws IOException, URISyntaxException {
+    public void checkUserReg_3_7() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has not matching symbols");
 
         UserReg user3 = new UserReg()
@@ -249,9 +249,35 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
+    @Test // Registration check. Request without FirstName.
+    public void checkUserReg_3_8() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Request without FirstName.");
+
+        UserReg user3 = new UserReg()
+                .withLastName("Test")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeWithoutFirstNameFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseWithoutFirstNameFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
     //LastName
     @Test // Registration check. LastName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$
-    public void checkUserReg_10() throws IOException, URISyntaxException {
+    public void checkUserReg_4_1() throws IOException, URISyntaxException {
         System.out.println("// Registration check. LastName has symbols that are matched for this regEx ^[а-яА-ЯЁёa-zA-Z -]+$");
 
         UserReg user3 = new UserReg()
@@ -269,7 +295,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. LastName has 50 symbols
-    public void checkUserReg_11() throws IOException, URISyntaxException {
+    public void checkUserReg_4_2() throws IOException, URISyntaxException {
         System.out.println("// Registration check. LastName has 50 symbols");
         String lastName = "slavaslavaslavaslavaslavaslavaslavaslavaslavaslava";
 
@@ -288,7 +314,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. LastName has 51 symbols
-    public void checkUserReg_12() throws IOException, URISyntaxException {
+    public void checkUserReg_4_3() throws IOException, URISyntaxException {
         System.out.println("// Registration check. LastName has 51 symbols");
         String lastName = "slavaslavaslavaslavaslavaslavaslavaslavaslavaslavaw";
 
@@ -316,7 +342,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. LastName has not matching symbols
-    public void checkUserReg_13() throws IOException, URISyntaxException {
+    public void checkUserReg_4_4() throws IOException, URISyntaxException {
         System.out.println("// Registration check. LastName has not matching symbols");
 
         UserReg user3 = new UserReg()
@@ -343,7 +369,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. LastName has only space symbol(s)
-    public void checkUserReg_14() throws IOException, URISyntaxException {
+    public void checkUserReg_4_5() throws IOException, URISyntaxException {
         System.out.println("// Registration check. LastName has only space symbol(s)");
 
         UserReg user3 = new UserReg()
@@ -370,7 +396,7 @@ public class UserRegTests extends TestBase {
     }
 
     @Test // Registration check. LastName is empty.
-    public void checkUserReg_15() throws IOException, URISyntaxException {
+    public void checkUserReg_4_6() throws IOException, URISyntaxException {
         System.out.println("// Registration check. LasttName is empty.");
 
         UserReg user3 = new UserReg()
@@ -399,7 +425,7 @@ public class UserRegTests extends TestBase {
 
 
     @Test // Registration check. Request without LastName.
-    public void checkUserReg_16() throws IOException, URISyntaxException {
+    public void checkUserReg_4_7() throws IOException, URISyntaxException {
         System.out.println("// Registration check. Request without LastName.");
 
         UserReg user3 = new UserReg()
