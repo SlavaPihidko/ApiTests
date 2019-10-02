@@ -428,22 +428,61 @@ public class UserRegTests extends TestBase {
     public void checkUserReg_4_7() throws IOException, URISyntaxException {
         System.out.println("// Registration check. Request without LastName.");
 
-        UserReg user3 = new UserReg()
+        UserReg user1 = new UserReg()
                 .withFirstName("Test")
                 .withRefStoreId(62)
                 .withPhone("+79036788778")
                 .withEmail(email)
                 .withPassword("qwertyU1");
 
+        String json = "{ \"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail()+"\"," +
+                "\"phone\": \""+ user1.getPhone()+"\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
         RegResponse regResponseExpected = new RegResponse()
                 .withStatus(false)
                 .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
                 .withStringCode("REQUEST_ERROR");
 
-        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeWithoutLastNameFromApi(user3);
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
         System.out.println("statusCodeFromApi " + statusCodeFromApi);
 
-        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseWithoutLastNameFromApi(user3);
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Request  lastName is int.
+    public void checkUserReg_4_8() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Request without LastName.");
+
+        UserReg user1 = new UserReg()
+                .withFirstName("Test")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        String json = "{ \"lastName\": "+ 12 + "," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail()+"\"," +
+                "\"phone\": \""+ user1.getPhone()+"\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
         System.out.println("regResponseExpected " + regResponseExpected);
 
         assertEquals(statusCodeFromApi, (400));
