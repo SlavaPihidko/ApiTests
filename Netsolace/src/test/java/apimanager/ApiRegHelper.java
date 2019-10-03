@@ -212,7 +212,7 @@ public class ApiRegHelper extends ApiHelperBase {
             String generatedstring= RandomStringUtils.randomAlphabetic(8);
             return(generatedstring);
     }
-    
+
     public int getRegStatusCodeWithoutFirstNameFromApi(UserReg user1) throws URISyntaxException, IOException {
 
         CloseableHttpClient client = HttpClients.createDefault();

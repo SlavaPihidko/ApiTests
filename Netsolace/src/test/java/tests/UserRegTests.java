@@ -35,12 +35,6 @@ public class UserRegTests extends TestBase {
                 .withEmail(email)
                 .withPassword("qwertyU1");
 
-
-        RegResponse regResponseExpected = new RegResponse()
-                .withStatus(true)
-                .withMessage("Sorry, this login already exists")
-                .withStringCode("LOGIN_ERROR");
-
         int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user2);
         System.out.println("statusCodeFromApi " + statusCodeFromApi);
 
@@ -253,22 +247,30 @@ public class UserRegTests extends TestBase {
     public void checkUserReg_3_8() throws IOException, URISyntaxException {
         System.out.println("// Registration check. Request without FirstName.");
 
-        UserReg user3 = new UserReg()
+        UserReg user1 = new UserReg()
                 .withLastName("Test")
                 .withRefStoreId(62)
                 .withPhone("+79036788778")
                 .withEmail(email)
                 .withPassword("qwertyU1");
 
+        String json = "{ \"lastName\": \""+ user1.getLastName()+ "\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail()+"\"," +
+                "\"phone\": \""+ user1.getPhone()+"\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+        System.out.println("json " + json);
+
         RegResponse regResponseExpected = new RegResponse()
                 .withStatus(false)
                 .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
                 .withStringCode("REQUEST_ERROR");
 
-        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeWithoutFirstNameFromApi(user3);
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
         System.out.println("statusCodeFromApi " + statusCodeFromApi);
 
-        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseWithoutFirstNameFromApi(user3);
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
         System.out.println("regResponseExpected " + regResponseExpected);
 
         assertEquals(statusCodeFromApi, (400));
@@ -458,7 +460,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. Request  lastName is int.
     public void checkUserReg_4_8() throws IOException, URISyntaxException {
-        System.out.println("// Registration check. Request without LastName.");
+        System.out.println("// Registration check. Request  lastName is int.");
 
         UserReg user1 = new UserReg()
                 .withFirstName("Test")
@@ -478,6 +480,232 @@ public class UserRegTests extends TestBase {
                 .withStatus(false)
                 .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
                 .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test  // Registration check. Phone number is less than one character
+    public void checkUserReg_5_1() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Phone number is less than one character");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("Test")
+                .withRefStoreId(62)
+                .withPhone("+7903678877")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        System.out.println(user3.getFirstName());
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Phone does not match regular expression")
+                .withStringCode("PHONE_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test  // Registration check. Phone number is more than one character
+    public void checkUserReg_5_2() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Phone number is more than one character");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("Test")
+                .withRefStoreId(62)
+                .withPhone("+790367887787")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        System.out.println(user3.getFirstName());
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Phone does not match regular expression")
+                .withStringCode("PHONE_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test  // Registration check. Phone number without country code
+    public void checkUserReg_5_3() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Phone number without country code");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestLast")
+                .withRefStoreId(62)
+                .withPhone("90367887787")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        System.out.println(user3.getFirstName());
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Phone does not match regular expression")
+                .withStringCode("PHONE_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test  // Registration check. Phone number is empty
+    public void checkUserReg_5_4() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Phone number is empty");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestLast")
+                .withRefStoreId(62)
+                .withPhone("")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        System.out.println(user3.getFirstName());
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test  // Registration check. Phone number is double
+    public void checkUserReg_5_5() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Phone number is double");
+
+        UserReg user1 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestLast")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        String json = "{ \"lastName\": \""+ user1.getLastName() +"\"," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail()+"\"," +
+                "\"phone\": "+ 790367887787.0 + "," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test  // Registration check. Without phone field
+    public void checkUserReg_5_6() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Without phone field");
+
+        UserReg user1 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestLast")
+                .withRefStoreId(62)
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        String json = "{ \"lastName\": \""+ user1.getLastName() +"\"," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail()+"\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Registration with phone that already exist in DB.
+    public void checkUserReg_5_7() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Registration with phone that already exist in DB.");
+
+        UserReg user2 = new UserReg()
+                .withFirstName("Slava")
+                .withLastName("Test")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user2);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test  // Registration check. Phone number is some word
+    public void checkUserReg_5_8() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Phone number is double");
+
+        UserReg user1 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestLast")
+                .withRefStoreId(62)
+                .withPhone("slavaPhone")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        String json = "{ \"lastName\": \""+ user1.getLastName() +"\"," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail() +"\"," +
+                "\"phone\": \""+ user1.getPhone() + "\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Phone does not match regular expression")
+                .withStringCode("PHONE_ERROR");
 
         int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
         System.out.println("statusCodeFromApi " + statusCodeFromApi);
