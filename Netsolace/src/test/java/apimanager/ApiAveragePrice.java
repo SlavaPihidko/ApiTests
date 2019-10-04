@@ -25,7 +25,6 @@ public class ApiAveragePrice extends ApiHelperBase {
 
         FileReader jsonFile = new FileReader("src/test/resources/json1.json");
 
-
         JsonParser jsonParser = new JsonParser();
         JsonArray parsed = (JsonArray) jsonParser.parse(jsonFile);
 
@@ -38,7 +37,6 @@ public class ApiAveragePrice extends ApiHelperBase {
             String time = i.getTime();
             String time2 = "2019-10-03 00:00:00";
 
-            //String inDate = "01-01-1990";
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             Timestamp ts = new Timestamp(df.parse(time).getTime());
 
@@ -46,24 +44,18 @@ public class ApiAveragePrice extends ApiHelperBase {
 
             AvPriceFromBitcoinaverage avPriceFromBitcoinaverage = new AvPriceFromBitcoinaverage()
                     .withAverage(average)
-                    .withTimeInt(ts);
+                    .withTs(ts);
 
             System.out.println("avPriceFromBitcoinaverage : " + avPriceFromBitcoinaverage);
 
             list_1.add(avPriceFromBitcoinaverage);
-
-
-            //int timeInt = time
         }
 
         System.out.println("list_1 :" + list_1);
 
-       // list_1.sort((d1,d2) -> d1.compareTo(d2));
-
-        list_1.sort(Comparator.comparing(AvPriceFromBitcoinaverage::getTimeInt));
+        list_1.sort(Comparator.comparing(AvPriceFromBitcoinaverage::getTs));
         System.out.println("list_1 :" + list_1);
 
         return list_1;
-
     }
 }
