@@ -1,10 +1,14 @@
 package model;
 
+import java.sql.Timestamp;
+
 public class AvPriceFromBitcoinaverage {
 
     private String time;
-    private int timeInt;
+    private Timestamp timeInt;
     private Double average;
+    private Timestamp ts;
+
 
     public String getTime() {
         return time;
@@ -15,11 +19,11 @@ public class AvPriceFromBitcoinaverage {
         return this;
     }
 
-    public int getTimeInt() {
+    public Timestamp getTimeInt() {
         return timeInt;
     }
 
-    public AvPriceFromBitcoinaverage withTimeInt(int timeInt) {
+    public AvPriceFromBitcoinaverage withTimeInt(Timestamp timeInt) {
         this.timeInt = timeInt;
         return this;
     }
@@ -33,12 +37,22 @@ public class AvPriceFromBitcoinaverage {
         return this;
     }
 
+    public Timestamp getTs() {
+        return ts;
+    }
+
+    public AvPriceFromBitcoinaverage withTs(Timestamp ts) {
+        this.ts = ts;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "AvPriceFromBitcoinaverage{" +
                 "time='" + time + '\'' +
                 ", timeInt=" + timeInt +
                 ", average=" + average +
+                ", ts=" + ts +
                 '}';
     }
 
@@ -49,16 +63,18 @@ public class AvPriceFromBitcoinaverage {
 
         AvPriceFromBitcoinaverage that = (AvPriceFromBitcoinaverage) o;
 
-        if (getTimeInt() != that.getTimeInt()) return false;
         if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null) return false;
-        return getAverage() != null ? getAverage().equals(that.getAverage()) : that.getAverage() == null;
+        if (getTimeInt() != null ? !getTimeInt().equals(that.getTimeInt()) : that.getTimeInt() != null) return false;
+        if (getAverage() != null ? !getAverage().equals(that.getAverage()) : that.getAverage() != null) return false;
+        return getTs() != null ? getTs().equals(that.getTs()) : that.getTs() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getTime() != null ? getTime().hashCode() : 0;
-        result = 31 * result + getTimeInt();
+        result = 31 * result + (getTimeInt() != null ? getTimeInt().hashCode() : 0);
         result = 31 * result + (getAverage() != null ? getAverage().hashCode() : 0);
+        result = 31 * result + (getTs() != null ? getTs().hashCode() : 0);
         return result;
     }
 }
