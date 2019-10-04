@@ -930,5 +930,298 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
+    @Test(enabled = false)  // Registration check. Email is short
+    public void checkUserReg_7_1() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Email is short");
+
+        UserReg user1 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withPhone("+79036788778")
+                .withEmail("s@i.ua")
+                .withPassword("qwertyU1");
+
+        String json = "{ \"lastName\": \""+ user1.getLastName() +"\"," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"email\": \""+ user1.getEmail() +"\"," +
+                "\"phone\": \""+ user1.getPhone()+ "\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test(enabled = false)  // Registration check. Email is long
+    public void checkUserReg_7_2() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Email is long");
+
+        UserReg user1 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withPhone("+79036788778")
+                .withEmail("slavaslavaslavaslavaslavaslavaslavaslavaslavaslava@slavaslavaslavaslavaslavaslavaslavaslavaslavaslava.netf")
+                .withPassword("qwertyU1");
+
+        String json = "{ \"lastName\": \""+ user1.getLastName() +"\"," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"email\": \""+ user1.getEmail() +"\"," +
+                "\"phone\": \""+ user1.getPhone()+ "\"," +
+                "\"password\": \""+ user1.getPassword()+"\"}";
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test // Registration check. all small letters 8 symbols
+    public void checkUserReg_8_1() throws IOException, URISyntaxException {
+        //slaU!@#$%^&*()_+=-0987654321<>/?|
+        //12345678abcdefABCDEF
+        System.out.println("// Registration check. all small letters 8 symbols");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withRefStoreId(22)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyu1");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. all digits 8 symbols
+    public void checkUserReg_8_2() throws IOException, URISyntaxException {
+        //slaU!@#$%^&*()_+=-0987654321<>/?|
+        //12345678abcdefABCDEF
+        System.out.println("// Registration check. all digits 8 symbols");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withRefStoreId(22)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("12345678");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Without digits 8 symbols
+    public void checkUserReg_8_3() throws IOException, URISyntaxException {
+        //slaU!@#$%^&*()_+=-0987654321<>/?|
+        //12345678abcdefABCDEF
+        System.out.println("// Registration check. Without digits 8 symbols");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withRefStoreId(22)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyUU");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Password is long with special symbols
+    public void checkUserReg_8_4() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Password is long with special symbols");
+
+        UserReg user2 = new UserReg()
+                .withFirstName("Slava")
+                .withLastName("Test")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("slaU!@#$%^&*()_+=-0987654321<>/?|");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user2);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test // Registration check. Password 7 symbols
+    public void checkUserReg_8_5() throws IOException, URISyntaxException {
+        //slaU!@#$%^&*()_+=-0987654321<>/?|
+        //12345678abcdefABCDEF
+        System.out.println("// Registration check. Password 7 symbols");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withRefStoreId(22)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("123abcA");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Password is empty
+    public void checkUserReg_8_6() throws IOException, URISyntaxException {
+        //slaU!@#$%^&*()_+=-0987654321<>/?|
+        //12345678abcdefABCDEF
+        System.out.println("// Registration check. Password is empty");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withRefStoreId(22)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Password has only 8 spaces
+    public void checkUserReg_8_7() throws IOException, URISyntaxException {
+        //slaU!@#$%^&*()_+=-0987654321<>/?|
+        //12345678abcdefABCDEF
+        System.out.println("// Registration check. Password has only 8 spaces");
+
+        UserReg user3 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withRefStoreId(22)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("        ");
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(user3);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Without Password field
+    public void checkUserReg_8_8() throws IOException, URISyntaxException {
+        //slaU!@#$%^&*()_+=-0987654321<>/?|
+        //12345678abcdefABCDEF
+        System.out.println("// Registration check. Without Password field");
+
+        UserReg user1 = new UserReg()
+                .withFirstName("Test")
+                .withLastName("TestName")
+                .withRefStoreId(22)
+                .withPhone("+79036788778")
+                .withEmail(email);
+
+        String json = "{ \"lastName\": \""+ user1.getLastName()+ "\"," +
+                "\"firstName\": \""+ user1.getFirstName() +"\"," +
+                "\"refStoreId\": "+ user1.getRefStoreId()+"," +
+                "\"email\": \""+ user1.getEmail()+"\"," +
+                "\"phone\": \""+ user1.getPhone()+"\"}" ;
+
+        RegResponse regResponseExpected = new RegResponse()
+                .withStatus(false)
+                .withMessage("Obligatory parameters (firstName, lastName, email, password, phone, refStoreId) or other paramereters are specified wrong")
+                .withStringCode("REQUEST_ERROR");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(json);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        RegResponse regResponseFromApi = am.getApiRegHelper().getRegResponseFromApi(json);
+        System.out.println("regResponseExpected " + regResponseExpected);
+
+        assertEquals(statusCodeFromApi, (400));
+        assertEquals(regResponseFromApi, regResponseExpected);
+    }
+
+    @Test // Registration check. Password more than 8 symbols, has digits, upperCase and LowerCase characters
+    public void checkUserReg_8_9() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. Password more than 8 symbols, has digits, upperCase and LowerCase characters");
+
+        UserReg user2 = new UserReg()
+                .withFirstName("Slava")
+                .withLastName("Test")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("12345678abcdefABCDEF");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user2);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
 }
 
