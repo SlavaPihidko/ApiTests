@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import model.AvPriceFromBitcoinaverage;
+import model.AvPriceFromblockchain;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -57,5 +58,35 @@ public class ApiAveragePrice extends ApiHelperBase {
         System.out.println("list_1 :" + list_1);
 
         return list_1;
+    }
+
+    public List<AvPriceFromBitcoinaverage> getList2Last30Days() throws FileNotFoundException {
+        List<AvPriceFromBitcoinaverage> list_2 = new ArrayList<>();
+
+        FileReader jsonFile = new FileReader("src/test/resources/json2.json");
+
+        JsonParser jsonParser = new JsonParser();
+        JsonArray parsed =  jsonParser.parse(jsonFile).getAsJsonObject().getAsJsonArray("values");
+
+        List<AvPriceFromblockchain> list =
+                new Gson().fromJson(parsed, new TypeToken<List<AvPriceFromblockchain>>(){}.getType());
+
+        for(AvPriceFromblockchain i: list ) {
+            long epoch = i.getX();
+            double average = i.getY();
+            String date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date (epoch*1000));
+
+            System.out.println("i.getX() :" + i.getX());
+            System.out.println("i.getY() :" + i.getY());
+
+            AvPriceFromBitcoinaverage av = new AvPriceFromBitcoinaverage()
+                    .withAverage(average)
+                    .withTime(date);
+
+            list_2.add(av);
+        }
+
+        list_2.sort(Comparator.comparing(AvPriceFromBitcoinaverage::getTime));
+        return  list_2;
     }
 }
