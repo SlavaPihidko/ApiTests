@@ -38,7 +38,7 @@ public class ApiAveragePrice extends ApiHelperBase {
             String time = i.getTime();
             String time2 = "2019-10-03 00:00:00";
 
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Timestamp ts = new Timestamp(df.parse(time).getTime());
 
             System.out.println("ts : " + ts);
@@ -60,7 +60,7 @@ public class ApiAveragePrice extends ApiHelperBase {
         return list_1;
     }
 
-    public List<AvPriceFromBitcoinaverage> getList2Last30Days() throws FileNotFoundException {
+    public List<AvPriceFromBitcoinaverage> getList2Last30Days() throws FileNotFoundException, ParseException {
         List<AvPriceFromBitcoinaverage> list_2 = new ArrayList<>();
 
         FileReader jsonFile = new FileReader("src/test/resources/json2.json");
@@ -74,19 +74,25 @@ public class ApiAveragePrice extends ApiHelperBase {
         for(AvPriceFromblockchain i: list ) {
             long epoch = i.getX();
             double average = i.getY();
-            String date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date (epoch*1000));
+
+            String time = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date (epoch*1000));
+
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Timestamp ts = new Timestamp(df.parse(time).getTime());
 
             System.out.println("i.getX() :" + i.getX());
             System.out.println("i.getY() :" + i.getY());
 
+
+
             AvPriceFromBitcoinaverage av = new AvPriceFromBitcoinaverage()
                     .withAverage(average)
-                    .withTime(date);
+                    .withTs(ts);
 
             list_2.add(av);
         }
 
-        list_2.sort(Comparator.comparing(AvPriceFromBitcoinaverage::getTime));
+        list_2.sort(Comparator.comparing(AvPriceFromBitcoinaverage::getTs));
         return  list_2;
     }
 }
