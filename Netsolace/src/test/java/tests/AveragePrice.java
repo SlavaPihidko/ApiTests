@@ -1,5 +1,6 @@
 package tests;
 
+import model.AvPrice;
 import model.AvPriceFromBitcoinaverage;
 import org.testng.annotations.Test;
 
@@ -14,8 +15,8 @@ public class AveragePrice  extends TestBase {
     @Test
     public void testAveragePrice() throws FileNotFoundException, ParseException {
 
-        List<AvPriceFromBitcoinaverage> list = am.getApiAveragePrice().getListLast30Days();
-        System.out.println("list : " + list);
+        List<AvPrice> listFromBitcoinAverage = am.getApiAveragePrice().getListLast30Days();
+        System.out.println("listFromBitcoinAverage : " + listFromBitcoinAverage);
 
 
         List<AvPriceFromBitcoinaverage> list2 = am.getApiAveragePrice().getList2Last30Days();
@@ -23,8 +24,8 @@ public class AveragePrice  extends TestBase {
 
         boolean x;
 
-        for (int i=0; i <= list.size()-1; i++) {
-           double xFromList1 =  list.get(i).getAverage();
+        for (int i=0; i <= listFromBitcoinAverage.size()-1; i++) {
+           double xFromList1 =  listFromBitcoinAverage.get(i).getAverage();
            double xFromList2 = list2.get(i).getAverage();
               double x1 = xFromList2 - (xFromList2/1000); // lower bound
               double x2 = xFromList2 + (xFromList2/1000); // upper bound
@@ -33,16 +34,16 @@ public class AveragePrice  extends TestBase {
             if (x1 <= xFromList1 & xFromList1 <= x2 ){
                 x = true;
                 System.out.println("x equls :" + x);
-                list.get(i).withCheck(true);
+                listFromBitcoinAverage.get(i).withCheck(true);
                 list2.get(i).withCheck(true);
             } else {
                 x = false;
                 System.out.println("x equls :" + x);
-                list.get(i).withCheck(false);
+                listFromBitcoinAverage.get(i).withCheck(false);
                 list2.get(i).withCheck(true);
             }
         }
 
-        assertEquals(list, list2);
+        assertEquals(listFromBitcoinAverage, list2);
     }
 }

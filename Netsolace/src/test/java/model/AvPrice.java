@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Timestamp;
 
-public class AvPrcice {
+public class AvPrice {
 
     private Double average;
     private Timestamp ts;
@@ -12,7 +12,7 @@ public class AvPrcice {
         return average;
     }
 
-    public AvPrcice withAverage(Double average) {
+    public AvPrice withAverage(Double average) {
         this.average = average;
         return this;
     }
@@ -21,7 +21,7 @@ public class AvPrcice {
         return ts;
     }
 
-    public AvPrcice withTs(Timestamp ts) {
+    public AvPrice withTs(Timestamp ts) {
         this.ts = ts;
         return this;
     }
@@ -30,7 +30,7 @@ public class AvPrcice {
         return check;
     }
 
-    public AvPrcice withCheck(boolean check) {
+    public AvPrice withCheck(boolean check) {
         this.check = check;
         return this;
     }
@@ -47,9 +47,9 @@ public class AvPrcice {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AvPrcice)) return false;
+        if (!(o instanceof AvPrice)) return false;
 
-        AvPrcice avPrcice = (AvPrcice) o;
+        AvPrice avPrcice = (AvPrice) o;
 
         if (isCheck() != avPrcice.isCheck()) return false;
         return getTs() != null ? getTs().equals(avPrcice.getTs()) : avPrcice.getTs() == null;

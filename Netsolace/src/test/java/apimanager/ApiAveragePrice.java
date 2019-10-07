@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import model.AvPrice;
 import model.AvPriceFromBitcoinaverage;
 import model.AvPriceFromblockchain;
 
@@ -20,9 +21,9 @@ import java.util.List;
 
 public class ApiAveragePrice extends ApiHelperBase {
 
-    public List<AvPriceFromBitcoinaverage> getListLast30Days() throws FileNotFoundException, ParseException {
+    public List<AvPrice> getListLast30Days() throws FileNotFoundException, ParseException {
 
-        List<AvPriceFromBitcoinaverage> list_1 = new ArrayList<>();
+        List<AvPrice> listFromBitcoinAverage = new ArrayList<>();
 
         FileReader jsonFile = new FileReader("src/test/resources/json1.json");
 
@@ -43,21 +44,21 @@ public class ApiAveragePrice extends ApiHelperBase {
 
             System.out.println("ts : " + ts);
 
-            AvPriceFromBitcoinaverage avPriceFromBitcoinaverage = new AvPriceFromBitcoinaverage()
+            AvPrice avPriceFromBitcoinAverage = new AvPrice()
                     .withAverage(average)
                     .withTs(ts);
 
-            System.out.println("avPriceFromBitcoinaverage : " + avPriceFromBitcoinaverage);
+            System.out.println("avPriceFromBitcoinAverage : " + avPriceFromBitcoinAverage);
 
-            list_1.add(avPriceFromBitcoinaverage);
+            listFromBitcoinAverage.add(avPriceFromBitcoinAverage);
         }
 
-        System.out.println("list_1 :" + list_1);
+        System.out.println("listFromBitcoinAverage :" + listFromBitcoinAverage);
 
-        list_1.sort(Comparator.comparing(AvPriceFromBitcoinaverage::getTs));
-        System.out.println("list_1 :" + list_1);
+        listFromBitcoinAverage.sort(Comparator.comparing(AvPrice::getTs));
+        System.out.println("listFromBitcoinAverage :" + listFromBitcoinAverage);
 
-        return list_1;
+        return listFromBitcoinAverage;
     }
 
     public List<AvPriceFromBitcoinaverage> getList2Last30Days() throws FileNotFoundException, ParseException {
