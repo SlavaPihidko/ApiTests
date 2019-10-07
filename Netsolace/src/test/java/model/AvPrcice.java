@@ -2,29 +2,17 @@ package model;
 
 import java.sql.Timestamp;
 
-public class AvPriceFromBitcoinaverage {
+public class AvPrcice {
 
-    private String time;
     private Double average;
     private Timestamp ts;
     private boolean check;
-
-
-    public String getTime() {
-        return time;
-    }
-
-    public AvPriceFromBitcoinaverage withTime(String time) {
-        this.time = time;
-        return this;
-    }
-
 
     public Double getAverage() {
         return average;
     }
 
-    public AvPriceFromBitcoinaverage withAverage(Double average) {
+    public AvPrcice withAverage(Double average) {
         this.average = average;
         return this;
     }
@@ -33,7 +21,7 @@ public class AvPriceFromBitcoinaverage {
         return ts;
     }
 
-    public AvPriceFromBitcoinaverage withTs(Timestamp ts) {
+    public AvPrcice withTs(Timestamp ts) {
         this.ts = ts;
         return this;
     }
@@ -42,16 +30,15 @@ public class AvPriceFromBitcoinaverage {
         return check;
     }
 
-    public AvPriceFromBitcoinaverage withCheck(boolean check) {
+    public AvPrcice withCheck(boolean check) {
         this.check = check;
         return this;
     }
 
     @Override
     public String toString() {
-        return "AvPriceFromBitcoinaverage{" +
-                "time='" + time + '\'' +
-                ", average=" + average +
+        return "AvPrcice{" +
+                "average=" + average +
                 ", ts=" + ts +
                 ", check=" + check +
                 '}';
@@ -60,12 +47,12 @@ public class AvPriceFromBitcoinaverage {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AvPriceFromBitcoinaverage)) return false;
+        if (!(o instanceof AvPrcice)) return false;
 
-        AvPriceFromBitcoinaverage that = (AvPriceFromBitcoinaverage) o;
+        AvPrcice avPrcice = (AvPrcice) o;
 
-        if (isCheck() != that.isCheck()) return false;
-        return getTs() != null ? getTs().equals(that.getTs()) : that.getTs() == null;
+        if (isCheck() != avPrcice.isCheck()) return false;
+        return getTs() != null ? getTs().equals(avPrcice.getTs()) : avPrcice.getTs() == null;
     }
 
     @Override
@@ -74,5 +61,4 @@ public class AvPriceFromBitcoinaverage {
         result = 31 * result + (isCheck() ? 1 : 0);
         return result;
     }
-
 }
