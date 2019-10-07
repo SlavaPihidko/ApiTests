@@ -7,6 +7,7 @@ public class AvPriceFromBitcoinaverage {
     private String time;
     private Double average;
     private Timestamp ts;
+    private boolean check;
 
 
     public String getTime() {
@@ -37,12 +38,22 @@ public class AvPriceFromBitcoinaverage {
         return this;
     }
 
+    public boolean isCheck() {
+        return check;
+    }
+
+    public AvPriceFromBitcoinaverage withCheck(boolean check) {
+        this.check = check;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "AvPriceFromBitcoinaverage{" +
                 "time='" + time + '\'' +
                 ", average=" + average +
                 ", ts=" + ts +
+                ", check=" + check +
                 '}';
     }
 
@@ -53,6 +64,7 @@ public class AvPriceFromBitcoinaverage {
 
         AvPriceFromBitcoinaverage that = (AvPriceFromBitcoinaverage) o;
 
+        if (isCheck() != that.isCheck()) return false;
         if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null) return false;
         if (getAverage() != null ? !getAverage().equals(that.getAverage()) : that.getAverage() != null) return false;
         return getTs() != null ? getTs().equals(that.getTs()) : that.getTs() == null;
@@ -63,6 +75,7 @@ public class AvPriceFromBitcoinaverage {
         int result = getTime() != null ? getTime().hashCode() : 0;
         result = 31 * result + (getAverage() != null ? getAverage().hashCode() : 0);
         result = 31 * result + (getTs() != null ? getTs().hashCode() : 0);
+        result = 31 * result + (isCheck() ? 1 : 0);
         return result;
     }
 }
