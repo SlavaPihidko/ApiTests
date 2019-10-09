@@ -97,8 +97,29 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
-    @Test // Registration check. FirstName has 101 symbols
+    @Test // Registration check. FirstName has 100 symbols
     public void checkUserReg_3_2() throws IOException, URISyntaxException {
+        System.out.println("// Registration check. FirstName has 100 symbols");
+        System.out.println("");
+
+        String name = "slavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslava";
+
+        UserReg user3 = new UserReg()
+                .withFirstName(name)
+                .withLastName("Test")
+                .withRefStoreId(62)
+                .withPhone("+79036788778")
+                .withEmail(email)
+                .withPassword("qwertyU1");
+
+        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
+        System.out.println("statusCodeFromApi " + statusCodeFromApi);
+
+        assertEquals(statusCodeFromApi, (200));
+    }
+
+    @Test // Registration check. FirstName has 101 symbols
+    public void checkUserReg_3_3() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has 101 symbols");
 
         String randomeString = am.getApiRegHelper().getRandomeString();
@@ -127,27 +148,6 @@ public class UserRegTests extends TestBase {
 
         assertEquals(statusCodeFromApi, (409));
         assertEquals(regResponseFromApi, regResponseExpected);
-    }
-
-    @Test // Registration check. FirstName has 100 symbols
-    public void checkUserReg_3_3() throws IOException, URISyntaxException {
-        System.out.println("// Registration check. FirstName has 100 symbols");
-        System.out.println("");
-
-        String name = "slavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslavaslava";
-
-        UserReg user3 = new UserReg()
-                .withFirstName(name)
-                .withLastName("Test")
-                .withRefStoreId(62)
-                .withPhone("+79036788778")
-                .withEmail(email)
-                .withPassword("qwertyU1");
-
-        int statusCodeFromApi = am.getApiRegHelper().getRegStatusCodeFromApi(user3);
-        System.out.println("statusCodeFromApi " + statusCodeFromApi);
-
-        assertEquals(statusCodeFromApi, (200));
     }
 
     @Test // Registration check. FirstName has only space symbol(s)
@@ -458,7 +458,7 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
-    @Test // Registration check. Request  lastName is int.
+    @Test // Registration check. LastName is int.
     public void checkUserReg_4_8() throws IOException, URISyntaxException {
         System.out.println("// Registration check. Request  lastName is int.");
 
@@ -491,6 +491,7 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
+    //Phone number field
     @Test  // Registration check. Phone number is less than one character
     public void checkUserReg_5_1() throws IOException, URISyntaxException {
         System.out.println("// Registration check. Phone number is less than one character");
@@ -717,9 +718,9 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
-    @Test // Registration check. RefstoreId is max
+    @Test // Registration check. RefstoreId is max 999
     public void checkUserReg_6_1() throws IOException, URISyntaxException {
-        System.out.println("// Registration check. RefstoreId is big");
+        System.out.println("// Registration check. RefstoreId is max 999");
 
         UserReg user3 = new UserReg()
                 .withFirstName("Test")
@@ -737,7 +738,7 @@ public class UserRegTests extends TestBase {
 
     @Test // Registration check. RefstoreId is zero
     public void checkUserReg_6_2() throws IOException, URISyntaxException {
-        System.out.println("// Registration check. RefstoreId is big");
+        System.out.println("// Registration check. RefstoreId is zero");
 
         UserReg user3 = new UserReg()
                 .withFirstName("Test")
@@ -930,6 +931,8 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
+
+    //Email field
     @Test(enabled = false)  // Registration check. Email is short
     public void checkUserReg_7_1() throws IOException, URISyntaxException {
         System.out.println("// Registration check. Email is short");
@@ -979,11 +982,12 @@ public class UserRegTests extends TestBase {
         assertEquals(statusCodeFromApi, (200));
     }
 
-    @Test // Registration check. all small letters 8 symbols
+    //Password field
+    @Test // Registration check. Password has all small letters 8 symbols
     public void checkUserReg_8_1() throws IOException, URISyntaxException {
         //slaU!@#$%^&*()_+=-0987654321<>/?|
         //12345678abcdefABCDEF
-        System.out.println("// Registration check. all small letters 8 symbols");
+        System.out.println("// Registration check. Password has all small letters 8 symbols");
 
         UserReg user3 = new UserReg()
                 .withFirstName("Test")
@@ -1008,11 +1012,11 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
-    @Test // Registration check. all digits 8 symbols
+    @Test // Registration check. Password has all digits 8 symbols
     public void checkUserReg_8_2() throws IOException, URISyntaxException {
         //slaU!@#$%^&*()_+=-0987654321<>/?|
         //12345678abcdefABCDEF
-        System.out.println("// Registration check. all digits 8 symbols");
+        System.out.println("// Registration check. Password has all digits 8 symbols");
 
         UserReg user3 = new UserReg()
                 .withFirstName("Test")
@@ -1037,11 +1041,11 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
-    @Test // Registration check. Without digits 8 symbols
+    @Test // Registration check. Password without digits 8 symbols
     public void checkUserReg_8_3() throws IOException, URISyntaxException {
         //slaU!@#$%^&*()_+=-0987654321<>/?|
         //12345678abcdefABCDEF
-        System.out.println("// Registration check. Without digits 8 symbols");
+        System.out.println("// Registration check. Password without digits 8 symbols");
 
         UserReg user3 = new UserReg()
                 .withFirstName("Test")
