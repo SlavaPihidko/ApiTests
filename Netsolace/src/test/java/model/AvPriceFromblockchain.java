@@ -6,19 +6,8 @@ import java.text.ParseException;
 
 public class AvPriceFromblockchain {
 
-
-//    @Test
-//    public  void avPriceFromblockchain1() throws ParseException {
-//        long epoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse("01/01/1970 01:00:00").getTime() / 1000;
-//
-//        long epoch2 = 1569888000;
-//        String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (epoch2*1000));
-//        System.out.println(epoch2);
-//        System.out.println(date);
-//    }
-
-    long x;
-    Double y;
+    private long x;
+    private Double y;
 
     public long getX() {
         return x;
