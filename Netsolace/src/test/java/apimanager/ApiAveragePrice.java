@@ -7,9 +7,11 @@ import com.google.gson.reflect.TypeToken;
 import model.AvPrice;
 import model.AvPriceFromBitcoinaverage;
 import model.AvPriceFromblockchain;
+import org.apache.http.client.fluent.Request;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -21,20 +23,31 @@ import java.util.List;
 
 public class ApiAveragePrice extends ApiHelperBase {
 
-    public List<AvPrice> getListLast30Days() throws FileNotFoundException, ParseException {
+    public List<AvPrice> getListLast30Days() throws IOException, ParseException {
 
         List<AvPrice> listFromBitcoinAverage = new ArrayList<>();
 
-        FileReader jsonFile = new FileReader("src/test/resources/json1.json");
+        //FileReader jsonFile = new FileReader("src/test/resources/json1.json");
+
+        //
+        String header = "https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=alltime";
+        String json = Request.Get(header)
+                .addHeader("Content-Type", "application/json")
+                .execute().returnContent().asString();
+        //System.out.println( "json*** :"  + json);
+
 
         JsonParser jsonParser = new JsonParser();
-        JsonArray parsed = (JsonArray) jsonParser.parse(jsonFile);
+        JsonArray parsed = (JsonArray) jsonParser.parse(json);
 
         List<AvPriceFromBitcoinaverage> avPrice_1 =
                 new Gson().fromJson(parsed, new TypeToken<List<AvPriceFromBitcoinaverage>>(){}.getType());
-        System.out.println("avPrice_1 : " + avPrice_1);
+//        System.out.println("avPrice_1 : " + avPrice_1);
 
-        for(AvPriceFromBitcoinaverage i : avPrice_1) {
+        List<AvPriceFromBitcoinaverage> subListLast30Days = avPrice_1.subList(0,30);
+       // System.out.println("subListLast30Days : " + subListLast30Days);
+
+        for(AvPriceFromBitcoinaverage i : subListLast30Days) {
             Double average = i.getAverage();
             String time = i.getTime();
             String time2 = "2019-10-03 00:00:00";
@@ -42,21 +55,21 @@ public class ApiAveragePrice extends ApiHelperBase {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Timestamp ts = new Timestamp(df.parse(time).getTime());
 
-            System.out.println("ts : " + ts);
+          //  System.out.println("ts : " + ts);
 
             AvPrice avPriceFromBitcoinAverage = new AvPrice()
                     .withAverage(average)
                     .withTs(ts);
 
-            System.out.println("avPriceFromBitcoinAverage : " + avPriceFromBitcoinAverage);
+          //  System.out.println("avPriceFromBitcoinAverage : " + avPriceFromBitcoinAverage);
 
             listFromBitcoinAverage.add(avPriceFromBitcoinAverage);
         }
 
-        System.out.println("listFromBitcoinAverage :" + listFromBitcoinAverage);
+       // System.out.println("listFromBitcoinAverage :" + listFromBitcoinAverage);
 
         listFromBitcoinAverage.sort(Comparator.comparing(AvPrice::getTs));
-        System.out.println("listFromBitcoinAverage :" + listFromBitcoinAverage);
+       // System.out.println("listFromBitcoinAverage :" + listFromBitcoinAverage);
 
         return listFromBitcoinAverage;
     }
