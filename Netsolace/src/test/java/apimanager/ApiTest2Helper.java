@@ -17,8 +17,9 @@ import java.util.List;
 
 public class ApiTest2Helper extends ApiHelperBase {
 
-    public String getLatest_url() throws IOException {
+    public String getLatest_url() throws IOException, InterruptedException {
         String header = "https://api.blockcypher.com/v1/btc/main";
+        Thread.sleep(3000);
         String json = Request.Get(header)
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
@@ -37,7 +38,7 @@ public class ApiTest2Helper extends ApiHelperBase {
         return latestUrl2;
     }
 
-    public List<String> getTxidsFromLatestUrl() throws IOException, ParseException {
+    public List<String> getTxidsFromLatestUrl() throws IOException, ParseException, InterruptedException {
 
         List<String> txIdsList = new ArrayList<>();
 
@@ -57,12 +58,35 @@ public class ApiTest2Helper extends ApiHelperBase {
 //        JSONObject innerObj = (JSONObject) txids.iterator().next();
         System.out.println("JSONArray txids :" + txids);
 
-        for(int i=0; i<=txids.size(); i++) {
-            txIdsList.add((String) txids.get(0));
+        for(int i=0; i<=txids.size()-1; i++) {
+            txIdsList.add((String) txids.get(i));
         }
 
         System.out.println("txIdsList :" + txIdsList);
         return txIdsList;
+    }
 
+
+    public List<String> getAddrsFromFirstTx() throws IOException, ParseException, InterruptedException {
+
+        List<String> listAddrs = new ArrayList<>();
+        Thread.sleep(3000);
+
+        String header = "https://api.blockcypher.com/v1/btc/main/txs/" + getTxidsFromLatestUrl().get(0);
+        System.out.println("header :" + header);
+
+        String json = Request.Get(header)
+                .addHeader("Content-Type", "application/json")
+                .execute().returnContent().asString();
+
+        System.out.println("json : " + json);
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+        JSONArray addrs = (JSONArray) jsonObject.get("addresses");
+
+        System.out.println("JSONArray addrs :" +  addrs);
+
+        return listAddrs;
     }
 }
