@@ -1,19 +1,17 @@
 package apimanager;
 
-import model.LatesBlock;
-
 public class ApiManager {
 
     private ApiRegHelper apiRegHelper;
 
     private ApiAveragePrice apiAveragePrice;
 
-    private ApiLatestUrl apiLatesUrl;
+    private ApiTest2Helper apiTest2Helper;
 
     public void dealWithApi() {
         apiRegHelper = new ApiRegHelper();
         apiAveragePrice = new ApiAveragePrice();
-        apiLatesUrl = new ApiLatestUrl();
+        apiTest2Helper = new ApiTest2Helper();
     }
 
     public ApiRegHelper getApiRegHelper() {
@@ -24,7 +22,8 @@ public class ApiManager {
         return apiAveragePrice;
     }
 
-    public ApiLatestUrl getApiLatesUrl() {
-        return apiLatesUrl;
+    public ApiTest2Helper getApiTest2Helper() {
+        return apiTest2Helper;
     }
+
 }
