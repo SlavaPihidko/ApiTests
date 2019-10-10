@@ -87,6 +87,12 @@ public class ApiTest2Helper extends ApiHelperBase {
 
         System.out.println("JSONArray addrs :" +  addrs);
 
+        for (int i=0; i<=addrs.size()-1; i++) {
+            listAddrs.add((String) addrs.get(i));
+        }
+
         return listAddrs;
     }
+
+
 }
