@@ -6,6 +6,7 @@ import model.Address;
 import model.AvPriceFromBitcoinaverage;
 import model.LatesBlock;
 
+import model.Txrefs;
 import org.apache.http.client.fluent.Request;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ApiTest2Helper extends ApiHelperBase {
+
+
 
     public String getLatest_url() throws IOException, InterruptedException {
         String header = "https://api.blockcypher.com/v1/btc/main";
@@ -113,11 +116,43 @@ public class ApiTest2Helper extends ApiHelperBase {
         System.out.println("json_2 :" + json_2);
 
         JsonParser jsonParser = new JsonParser();
-        JsonElement parsed =  jsonParser.parse(json_2);
+        JsonElement parsed_1 =  jsonParser.parse(json_2);
+        JsonArray parsed_2 =  jsonParser.parse(json_2).getAsJsonObject().getAsJsonArray("txrefs");
 
         Address addrs =
-                new Gson().fromJson(parsed, new TypeToken<Address>(){}.getType());
+                new Gson().fromJson(parsed_1, new TypeToken<Address>(){}.getType());
         System.out.println("addrs :" + addrs);
+
+        List<Txrefs> txrefs = new Gson().fromJson(parsed_2, new TypeToken<List<Txrefs>>(){}.getType());
+        System.out.println("txrefs :" + txrefs);
+
+        System.out.println(
+                "  addrs.getBalance() :" + addrs.getBalance() +
+                "  addrs.getTotal_sent() :" + addrs.getTotal_sent()+
+                "  addrs.getTotal_received() :" + addrs.getTotal_received()
+        );
+
+        for(Txrefs i: txrefs) {
+
+            String spent = i.getSpent();
+
+            if(spent == null) {
+                System.out.println("null");
+            } else {
+
+                if (spent.equals("false")) {
+                    System.out.println("false :");
+                    System.out.println(i.getValue());
+                }
+                else   {
+                    System.out.println("true :");
+                    System.out.println(i.getValue());
+                }
+            }
+        }
+
+
+
 
         return addrs;
     }

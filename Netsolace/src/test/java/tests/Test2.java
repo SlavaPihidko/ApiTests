@@ -21,19 +21,16 @@ public class Test2 extends TestBase {
 
         int balance = allInOneAddress.getBalance();
 
-        System.out.println("allInOneAddress.getTxrefs() "+allInOneAddress.getTxrefs());
 
-        System.out.println(Arrays.toString(allInOneAddress.getTxrefs()));
-
-        for(Txrefs i: allInOneAddress.getTxrefs()) {
-            if(i.getSpent().equals("false")) {
-                System.out.println("false :");
-                System.out.println(i.getValue());
-            }
-            if(i.getSpent().equals("true")){
-                System.out.println("true :");
-                System.out.println(i.getValue());
-            }
-        }
+//        for(Txrefs i: allInOneAddress.getTxrefs()) {
+//            if(i.getSpent().equals("false")) {
+//                System.out.println("false :");
+//                System.out.println(i.getValue());
+//            }
+//            if(i.getSpent().equals("true")){
+//                System.out.println("true :");
+//                System.out.println(i.getValue());
+//            }
+//        }
     }
 }
