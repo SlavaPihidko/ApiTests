@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
 public class ApiTest2Helper extends ApiHelperBase {
 
 
@@ -113,7 +115,7 @@ public class ApiTest2Helper extends ApiHelperBase {
 
         String json_1 = json.replace("\"spent\": false","\"spent\": \"false\"");
         String json_2 = json_1.replace("\"spent\": true","\"spent\": \"true\"");
-        System.out.println("json_2 :" + json_2);
+        //System.out.println("json_2 :" + json_2);
 
         JsonParser jsonParser = new JsonParser();
         JsonElement parsed_1 =  jsonParser.parse(json_2);
@@ -129,8 +131,11 @@ public class ApiTest2Helper extends ApiHelperBase {
         System.out.println(
                 "  addrs.getBalance() :" + addrs.getBalance() +
                 "  addrs.getTotal_sent() :" + addrs.getTotal_sent()+
-                "  addrs.getTotal_received() :" + addrs.getTotal_received()
-        );
+                "  addrs.getTotal_received() :" + addrs.getTotal_received());
+
+        long sumValueFalse = 0;
+        long sumValueTrue = 0;
+        long sumValueNull = 0;
 
         for(Txrefs i: txrefs) {
 
@@ -138,20 +143,35 @@ public class ApiTest2Helper extends ApiHelperBase {
 
             if(spent == null) {
                 System.out.println("null");
+                sumValueNull += i.getValue() ;
+                System.out.println(sumValueNull);
             } else {
 
                 if (spent.equals("false")) {
-                    System.out.println("false :");
-                    System.out.println(i.getValue());
+                     System.out.println("false :");
+
+                     sumValueFalse += i.getValue() ;
+                     System.out.println(sumValueFalse);
                 }
                 else   {
                     System.out.println("true :");
-                    System.out.println(i.getValue());
+                    sumValueTrue += i.getValue();
+                    System.out.println(sumValueTrue);
                 }
             }
         }
 
+        System.out.println("sumValueFalse :" +sumValueFalse);
+        System.out.println("sumValueTrue :" +sumValueTrue);
+        System.out.println("sumValueNull :" +sumValueNull);
 
+        long sumTotal = sumValueFalse+sumValueTrue+sumValueNull;
+        System.out.println("SumTotal :" + sumTotal);
+
+
+
+        long raznica = addrs.getTotal_sent()-sumTotal;
+        System.out.println("raznica :" + raznica);
 
 
         return addrs;

@@ -4,12 +4,12 @@ package model;
 import java.util.Arrays;
 
 public class Address {
-    private int total_received;
-    private int total_sent;
-    private int balance;
+    private long total_received;
+    private long total_sent;
+    private long balance;
     private Txrefs [] txrefs;
 
-    public int getTotal_received() {
+    public long getTotal_received() {
         return total_received;
     }
 
@@ -18,7 +18,7 @@ public class Address {
         return this;
     }
 
-    public int getTotal_sent() {
+    public long getTotal_sent() {
         return total_sent;
     }
 
@@ -27,7 +27,7 @@ public class Address {
         return this;
     }
 
-    public int getBalance() {
+    public long getBalance() {
         return balance;
     }
 

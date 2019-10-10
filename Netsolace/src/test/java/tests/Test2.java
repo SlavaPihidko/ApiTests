@@ -19,18 +19,5 @@ public class Test2 extends TestBase {
         //List<String> address = am.getApiTest2Helper().getAddrsFromFirstTx();
         Address allInOneAddress = am.getApiTest2Helper().getAddressObjects();
 
-        int balance = allInOneAddress.getBalance();
-
-
-//        for(Txrefs i: allInOneAddress.getTxrefs()) {
-//            if(i.getSpent().equals("false")) {
-//                System.out.println("false :");
-//                System.out.println(i.getValue());
-//            }
-//            if(i.getSpent().equals("true")){
-//                System.out.println("true :");
-//                System.out.println(i.getValue());
-//            }
-//        }
     }
 }

@@ -2,10 +2,10 @@ package model;
 
 public class Txrefs {
 
-    private int value;
+    private long value;
     String spent;
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
