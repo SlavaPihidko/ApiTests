@@ -2,6 +2,9 @@ package model;
 
 public class Txrefs {
 
+    private int value;
+    String spent;
+
     public int getValue() {
         return value;
     }
@@ -11,17 +14,14 @@ public class Txrefs {
         return this;
     }
 
-    public boolean isSpent() {
+    public String getSpent() {
         return spent;
     }
 
-    public Txrefs withSpent(boolean spent) {
+    public Txrefs withSpent(String spent) {
         this.spent = spent;
         return this;
     }
-
-    private int value;
-    boolean spent;
 
     @Override
     public String toString() {

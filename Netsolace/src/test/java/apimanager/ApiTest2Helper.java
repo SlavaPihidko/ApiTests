@@ -2,6 +2,7 @@ package apimanager;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import model.Address;
 import model.AvPriceFromBitcoinaverage;
 import model.LatesBlock;
 
@@ -95,4 +96,29 @@ public class ApiTest2Helper extends ApiHelperBase {
     }
 
 
+    public Address getAddressObjects() throws ParseException, InterruptedException, IOException {
+
+        //3Bmb9Jig8A5kHdDSxvDZ6eryj3AXd3swuJ
+        //getAddrsFromFirstTx().get(0)
+        String header = "https://api.blockcypher.com/v1/btc/main/addrs/" + "3Bmb9Jig8A5kHdDSxvDZ6eryj3AXd3swuJ";
+        Thread.sleep(2000);
+        String json = Request.Get(header)
+                .addHeader("Content-Type", "application/json")
+                .execute().returnContent().asString();
+
+        //System.out.println("json : " + json);
+
+        String json_1 = json.replace("\"spent\": false","\"spent\": \"false\"");
+        String json_2 = json_1.replace("\"spent\": true","\"spent\": \"true\"");
+        System.out.println("json_2 :" + json_2);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement parsed =  jsonParser.parse(json_2);
+
+        Address addrs =
+                new Gson().fromJson(parsed, new TypeToken<Address>(){}.getType());
+        System.out.println("addrs :" + addrs);
+
+        return addrs;
+    }
 }
