@@ -17,12 +17,11 @@ public class Test2 extends TestBase {
     @Test
     public void test2() throws IOException, ParseException, InterruptedException {
         String latestUrl = am.getApiTest2Helper().getLatest_url();
-        List<String> txIds = am.getApiTest2Helper().getTxidsFromLatestUrl();
+        String firstTxIdFromLatestUrl = am.getApiTest2Helper().getFirstTxidsFromLatestUrl();
         List<String> address = am.getApiTest2Helper().getAddrsFromFirstTx();
         Address valuesAddressFromTop = am.getApiTest2Helper().getValuesFromAddressTop();
         Address valuesAddressFromArray = am.getApiTest2Helper().getValuesFromAddressArray();
 
         assertEquals(valuesAddressFromArray, valuesAddressFromTop);
-
     }
 }

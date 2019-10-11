@@ -21,55 +21,50 @@ import static org.testng.Assert.assertEquals;
 
 public class ApiTest2Helper extends ApiHelperBase {
 
+    String latest_url;
+    String firstTxidFromLatestUrl;
 
 
-    public String getLatest_url() throws IOException, InterruptedException {
+    public String getLatest_url() throws IOException, InterruptedException, ParseException {
+
         String header = "https://api.blockcypher.com/v1/btc/main";
-        Thread.sleep(3000);
         String json = Request.Get(header)
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
         //System.out.println( "json*** :"  + json);
 
+        JSONParser jsonParser = new JSONParser();
+        JSONObject parsed = (JSONObject) jsonParser.parse(json);
+        latest_url = (String) parsed.get("latest_url");
 
-        JsonParser jsonParser = new JsonParser();
-        JsonElement parsed =  jsonParser.parse(json);
-
-        LatesBlock latestUrl =
-                new Gson().fromJson(parsed, new TypeToken<LatesBlock>(){}.getType());
-       // System.out.println("latestUrl: " + latestUrl);
-
-        String latestUrl2 = latestUrl.getLatest_url();
-
-        return latestUrl2;
+        System.out.println(latest_url);
+        return latest_url;
     }
 
-    public List<String> getTxidsFromLatestUrl() throws IOException, ParseException, InterruptedException {
+    public String getFirstTxidsFromLatestUrl() throws IOException, ParseException, InterruptedException {
 
         List<String> txIdsList = new ArrayList<>();
 
-        String header = getLatest_url();
+        String header = latest_url;
         String json = Request.Get(header)
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
 
         //System.out.println("json : " + json);
 
-
-
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject)jsonParser.parse(json);
 
         JSONArray txids = (JSONArray) jsonObject.get("txids");
-//        JSONObject innerObj = (JSONObject) txids.iterator().next();
         //System.out.println("JSONArray txids :" + txids);
 
         for(int i=0; i<=txids.size()-1; i++) {
             txIdsList.add((String) txids.get(i));
         }
 
-        //System.out.println("txIdsList :" + txIdsList);
-        return txIdsList;
+        System.out.println("txIdsList :" + txIdsList);
+        firstTxidFromLatestUrl = txIdsList.get(0);
+        return firstTxidFromLatestUrl;
     }
 
 
@@ -78,7 +73,7 @@ public class ApiTest2Helper extends ApiHelperBase {
         List<String> listAddrs = new ArrayList<>();
         Thread.sleep(3000);
 
-        String header = "https://api.blockcypher.com/v1/btc/main/txs/" + getTxidsFromLatestUrl().get(0);
+        String header = "https://api.blockcypher.com/v1/btc/main/txs/" + firstTxidFromLatestUrl;
         //System.out.println("header :" + header);
 
         String json = Request.Get(header)
@@ -97,6 +92,7 @@ public class ApiTest2Helper extends ApiHelperBase {
             listAddrs.add((String) addrs.get(i));
         }
 
+        System.out.println("listAddrs :" + listAddrs);
         return listAddrs;
     }
 
@@ -129,20 +125,17 @@ public class ApiTest2Helper extends ApiHelperBase {
                 .withTotal_received(addrs.getTotal_received());
 
         System.out.println("values_1 :" + values_1);
-
-
         return values_1;
     }
 
     public Address getValuesFromAddressArray() throws InterruptedException, ParseException, IOException {
-        String json = jsonAddress();
 
+        String json = jsonAddress();
 
         String json_1 = json.replace("\"spent\": false","\"spent\": \"false\"");
         String json_2 = json_1.replace("\"spent\": true","\"spent\": \"true\"");
 
         JsonParser jsonParser = new JsonParser();
-        JsonElement parsed_1 =  jsonParser.parse(json_2);
         JsonArray parsed_2 =  jsonParser.parse(json_2).getAsJsonObject().getAsJsonArray("txrefs");
 
         List<Txrefs> txrefs = new Gson().fromJson(parsed_2, new TypeToken<List<Txrefs>>(){}.getType());
@@ -151,6 +144,8 @@ public class ApiTest2Helper extends ApiHelperBase {
         long sumValueFalse = 0;
         long sumValueTrue = 0;
         long sumValueNull = 0;
+
+        System.out.println("txrefs.size() :" + txrefs.size());
 
         for(Txrefs i: txrefs) {
 
@@ -182,11 +177,6 @@ public class ApiTest2Helper extends ApiHelperBase {
                 .withBalance(sumValueFalse);
 
         System.out.println("values_2 :" + values_2);
-
-//        System.out.println("sumValueFalse :" +sumValueFalse);
-//        System.out.println("sumValueTrue :" +sumValueTrue);
-//        System.out.println("sumValueNull :" +sumValueNull);
-
         return values_2;
     }
 
