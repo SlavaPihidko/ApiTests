@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,13 +109,17 @@ public class ApiTest2Helper extends ApiHelperBase {
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
 
+        System.out.println("jsonAddress in method getJsonAddress() " + jsonAddress);
         return jsonAddress;
     }
 
 
     public Address getValuesFromAddressTop() throws ParseException, InterruptedException, IOException {
 
+        //System.out.println("jsonAddress in method getValuesFromAddressTop() " + jsonAddress);
         JsonParser jsonParser = new JsonParser();
+
+        //FileReader file = new FileReader("src/test/resources/jsonHW2.json");
         JsonElement parsed_1 = jsonParser.parse(jsonAddress);
 
         Address addrs =
@@ -131,6 +136,9 @@ public class ApiTest2Helper extends ApiHelperBase {
     }
 
     public Address getValuesFromAddressArray() throws InterruptedException, ParseException, IOException {
+        //System.out.println("jsonAddress in method getValuesFromAddressArray() " + jsonAddress);
+
+        //FileReader file = new FileReader("src/test/resources/jsonHW2.json");
 
         String json_1 = jsonAddress.replace("\"spent\": false","\"spent\": \"false\"");
         String json_2 = json_1.replace("\"spent\": true","\"spent\": \"true\"");
@@ -152,21 +160,20 @@ public class ApiTest2Helper extends ApiHelperBase {
             String spent = i.getSpent();
 
             if(spent == null) {
-                //System.out.println("null");
+                System.out.println("null");
                 sumValueNull += i.getValue() ;
-                //System.out.println(sumValueNull);
+                System.out.println(i.getValue());
             } else {
 
                 if (spent.equals("false")) {
-                    //System.out.println("false :");
-
+                    System.out.println("false :");
                     sumValueFalse += i.getValue() ;
-                    //System.out.println(sumValueFalse);
+                    System.out.println(i.getValue());
                 }
-                else   {
-                    //System.out.println("true :");
+                else  {
+                    System.out.println("true :");
                     sumValueTrue += i.getValue();
-                    //System.out.println(sumValueTrue);
+                    System.out.println(i.getValue());
                 }
             }
         }
