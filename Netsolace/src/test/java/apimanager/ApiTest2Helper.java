@@ -37,7 +37,7 @@ public class ApiTest2Helper extends ApiHelperBase {
 
         LatesBlock latestUrl =
                 new Gson().fromJson(parsed, new TypeToken<LatesBlock>(){}.getType());
-        System.out.println("latestUrl: " + latestUrl);
+       // System.out.println("latestUrl: " + latestUrl);
 
         String latestUrl2 = latestUrl.getLatest_url();
 
@@ -53,7 +53,7 @@ public class ApiTest2Helper extends ApiHelperBase {
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
 
-        System.out.println("json : " + json);
+        //System.out.println("json : " + json);
 
 
 
@@ -62,13 +62,13 @@ public class ApiTest2Helper extends ApiHelperBase {
 
         JSONArray txids = (JSONArray) jsonObject.get("txids");
 //        JSONObject innerObj = (JSONObject) txids.iterator().next();
-        System.out.println("JSONArray txids :" + txids);
+        //System.out.println("JSONArray txids :" + txids);
 
         for(int i=0; i<=txids.size()-1; i++) {
             txIdsList.add((String) txids.get(i));
         }
 
-        System.out.println("txIdsList :" + txIdsList);
+        //System.out.println("txIdsList :" + txIdsList);
         return txIdsList;
     }
 
@@ -79,19 +79,19 @@ public class ApiTest2Helper extends ApiHelperBase {
         Thread.sleep(3000);
 
         String header = "https://api.blockcypher.com/v1/btc/main/txs/" + getTxidsFromLatestUrl().get(0);
-        System.out.println("header :" + header);
+        //System.out.println("header :" + header);
 
         String json = Request.Get(header)
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
 
-        System.out.println("json : " + json);
+        //System.out.println("json : " + json);
 
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
         JSONArray addrs = (JSONArray) jsonObject.get("addresses");
 
-        System.out.println("JSONArray addrs :" +  addrs);
+        //System.out.println("JSONArray addrs :" +  addrs);
 
         for (int i=0; i<=addrs.size()-1; i++) {
             listAddrs.add((String) addrs.get(i));
@@ -121,7 +121,7 @@ public class ApiTest2Helper extends ApiHelperBase {
 
         Address addrs =
                 new Gson().fromJson(parsed_1, new TypeToken<Address>(){}.getType());
-        System.out.println("addrs :" + addrs);
+        //System.out.println("addrs :" + addrs);
 
         Address values_1 = new Address()
                 .withBalance(addrs.getBalance())
@@ -131,7 +131,7 @@ public class ApiTest2Helper extends ApiHelperBase {
         System.out.println("values_1 :" + values_1);
 
 
-        return addrs;
+        return values_1;
     }
 
     public Address getValuesFromAddressArray() throws InterruptedException, ParseException, IOException {
@@ -146,7 +146,7 @@ public class ApiTest2Helper extends ApiHelperBase {
         JsonArray parsed_2 =  jsonParser.parse(json_2).getAsJsonObject().getAsJsonArray("txrefs");
 
         List<Txrefs> txrefs = new Gson().fromJson(parsed_2, new TypeToken<List<Txrefs>>(){}.getType());
-        System.out.println("txrefs :" + txrefs);
+        //System.out.println("txrefs :" + txrefs);
 
         long sumValueFalse = 0;
         long sumValueTrue = 0;
@@ -157,21 +157,21 @@ public class ApiTest2Helper extends ApiHelperBase {
             String spent = i.getSpent();
 
             if(spent == null) {
-                System.out.println("null");
+                //System.out.println("null");
                 sumValueNull += i.getValue() ;
-                System.out.println(sumValueNull);
+                //System.out.println(sumValueNull);
             } else {
 
                 if (spent.equals("false")) {
-                    System.out.println("false :");
+                    //System.out.println("false :");
 
                     sumValueFalse += i.getValue() ;
-                    System.out.println(sumValueFalse);
+                    //System.out.println(sumValueFalse);
                 }
                 else   {
-                    System.out.println("true :");
+                    //System.out.println("true :");
                     sumValueTrue += i.getValue();
-                    System.out.println(sumValueTrue);
+                    //System.out.println(sumValueTrue);
                 }
             }
         }
@@ -181,12 +181,11 @@ public class ApiTest2Helper extends ApiHelperBase {
                 .withTotal_sent(sumValueTrue)
                 .withBalance(sumValueFalse);
 
-        System.out.println("sumValueFalse :" +sumValueFalse);
-        System.out.println("sumValueTrue :" +sumValueTrue);
-        System.out.println("sumValueNull :" +sumValueNull);
+        System.out.println("values_2 :" + values_2);
 
-        long sumTotal = sumValueFalse+sumValueTrue;
-        System.out.println("SumTotal :" + sumTotal);
+//        System.out.println("sumValueFalse :" +sumValueFalse);
+//        System.out.println("sumValueTrue :" +sumValueTrue);
+//        System.out.println("sumValueNull :" +sumValueNull);
 
         return values_2;
     }

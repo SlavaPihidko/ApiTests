@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
 public class Test2 extends TestBase {
 
     @Test
@@ -17,7 +19,10 @@ public class Test2 extends TestBase {
         String latestUrl = am.getApiTest2Helper().getLatest_url();
         List<String> txIds = am.getApiTest2Helper().getTxidsFromLatestUrl();
         List<String> address = am.getApiTest2Helper().getAddrsFromFirstTx();
-        Address allInOneAddress = am.getApiTest2Helper().getValuesFromAddressTop();
+        Address valuesAddressFromTop = am.getApiTest2Helper().getValuesFromAddressTop();
+        Address valuesAddressFromArray = am.getApiTest2Helper().getValuesFromAddressArray();
+
+        assertEquals(valuesAddressFromArray, valuesAddressFromTop);
 
     }
 }
