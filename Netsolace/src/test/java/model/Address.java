@@ -13,7 +13,7 @@ public class Address {
         return total_received;
     }
 
-    public Address withTotal_received(int total_received) {
+    public Address withTotal_received(long total_received) {
         this.total_received = total_received;
         return this;
     }
@@ -22,7 +22,7 @@ public class Address {
         return total_sent;
     }
 
-    public Address withTotal_sent(int total_sent) {
+    public Address withTotal_sent(long total_sent) {
         this.total_sent = total_sent;
         return this;
     }
@@ -31,7 +31,7 @@ public class Address {
         return balance;
     }
 
-    public Address withBalance(int balance) {
+    public Address withBalance(long balance) {
         this.balance = balance;
         return this;
     }

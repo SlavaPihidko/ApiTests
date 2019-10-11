@@ -101,37 +101,52 @@ public class ApiTest2Helper extends ApiHelperBase {
     }
 
 
-    public Address getAddressObjects() throws ParseException, InterruptedException, IOException {
-
-        //3Bmb9Jig8A5kHdDSxvDZ6eryj3AXd3swuJ
-        //getAddrsFromFirstTx().get(0)
-        String header = "https://api.blockcypher.com/v1/btc/main/addrs/" + "3Bmb9Jig8A5kHdDSxvDZ6eryj3AXd3swuJ";
+    public String jsonAddress() throws IOException, InterruptedException, ParseException {
+        String header = "https://api.blockcypher.com/v1/btc/main/addrs/" + getAddrsFromFirstTx().get(0);
         Thread.sleep(2000);
         String json = Request.Get(header)
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
 
-        //System.out.println("json : " + json);
+        return json;
+    }
 
-        String json_1 = json.replace("\"spent\": false","\"spent\": \"false\"");
-        String json_2 = json_1.replace("\"spent\": true","\"spent\": \"true\"");
-        //System.out.println("json_2 :" + json_2);
+
+    public Address getValuesFromAddressTop() throws ParseException, InterruptedException, IOException {
+
+        String json = jsonAddress();
 
         JsonParser jsonParser = new JsonParser();
-        JsonElement parsed_1 =  jsonParser.parse(json_2);
-        JsonArray parsed_2 =  jsonParser.parse(json_2).getAsJsonObject().getAsJsonArray("txrefs");
+        JsonElement parsed_1 = jsonParser.parse(json);
 
         Address addrs =
                 new Gson().fromJson(parsed_1, new TypeToken<Address>(){}.getType());
         System.out.println("addrs :" + addrs);
 
+        Address values_1 = new Address()
+                .withBalance(addrs.getBalance())
+                .withTotal_sent(addrs.getTotal_sent())
+                .withTotal_received(addrs.getTotal_received());
+
+        System.out.println("values_1 :" + values_1);
+
+
+        return addrs;
+    }
+
+    public Address getValuesFromAddressArray() throws InterruptedException, ParseException, IOException {
+        String json = jsonAddress();
+
+
+        String json_1 = json.replace("\"spent\": false","\"spent\": \"false\"");
+        String json_2 = json_1.replace("\"spent\": true","\"spent\": \"true\"");
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement parsed_1 =  jsonParser.parse(json_2);
+        JsonArray parsed_2 =  jsonParser.parse(json_2).getAsJsonObject().getAsJsonArray("txrefs");
+
         List<Txrefs> txrefs = new Gson().fromJson(parsed_2, new TypeToken<List<Txrefs>>(){}.getType());
         System.out.println("txrefs :" + txrefs);
-
-        System.out.println(
-                "  addrs.getBalance() :" + addrs.getBalance() +
-                "  addrs.getTotal_sent() :" + addrs.getTotal_sent()+
-                "  addrs.getTotal_received() :" + addrs.getTotal_received());
 
         long sumValueFalse = 0;
         long sumValueTrue = 0;
@@ -148,10 +163,10 @@ public class ApiTest2Helper extends ApiHelperBase {
             } else {
 
                 if (spent.equals("false")) {
-                     System.out.println("false :");
+                    System.out.println("false :");
 
-                     sumValueFalse += i.getValue() ;
-                     System.out.println(sumValueFalse);
+                    sumValueFalse += i.getValue() ;
+                    System.out.println(sumValueFalse);
                 }
                 else   {
                     System.out.println("true :");
@@ -161,19 +176,19 @@ public class ApiTest2Helper extends ApiHelperBase {
             }
         }
 
+        Address values_2 = new Address()
+                .withTotal_received(sumValueFalse+sumValueTrue)
+                .withTotal_sent(sumValueTrue)
+                .withBalance(sumValueFalse);
+
         System.out.println("sumValueFalse :" +sumValueFalse);
         System.out.println("sumValueTrue :" +sumValueTrue);
         System.out.println("sumValueNull :" +sumValueNull);
 
-        long sumTotal = sumValueFalse+sumValueTrue+sumValueNull;
+        long sumTotal = sumValueFalse+sumValueTrue;
         System.out.println("SumTotal :" + sumTotal);
 
-
-
-        long raznica = addrs.getTotal_sent()-sumTotal;
-        System.out.println("raznica :" + raznica);
-
-
-        return addrs;
+        return values_2;
     }
+
 }
