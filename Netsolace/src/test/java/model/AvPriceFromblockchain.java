@@ -1,9 +1,5 @@
 package model;
 
-import org.testng.annotations.Test;
-
-import java.text.ParseException;
-
 public class AvPriceFromblockchain {
 
     private long x;

@@ -1,34 +1,30 @@
 package apimanager;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import model.Address;
-import model.AvPriceFromBitcoinaverage;
-import model.LatesBlock;
-
 import model.Txrefs;
 import org.apache.http.client.fluent.Request;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-
 public class ApiTest2Helper extends ApiHelperBase {
 
     String latest_url;
-    String firstTxidFromLatestUrl;
+    String firstTxIdFromLatestUrl;
     String jsonAddress;
     String firstAddressFromList;
 
 
-    public String getLatest_url() throws IOException, InterruptedException, ParseException {
+    public String getLatestUrl() throws IOException, ParseException {
 
         String header = "https://api.blockcypher.com/v1/btc/main";
         String json = Request.Get(header)
@@ -44,7 +40,7 @@ public class ApiTest2Helper extends ApiHelperBase {
         return latest_url;
     }
 
-    public String getFirstTxidsFromLatestUrl() throws IOException, ParseException, InterruptedException {
+    public String getFirstTxIdFromLatestUrl() throws IOException, ParseException {
 
         List<String> txIdsList = new ArrayList<>();
 
@@ -56,7 +52,7 @@ public class ApiTest2Helper extends ApiHelperBase {
         //System.out.println("json : " + json);
 
         JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject)jsonParser.parse(json);
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
 
         JSONArray txids = (JSONArray) jsonObject.get("txids");
         //System.out.println("JSONArray txids :" + txids);
@@ -66,8 +62,8 @@ public class ApiTest2Helper extends ApiHelperBase {
         }
 
         System.out.println("txIdsList :" + txIdsList);
-        firstTxidFromLatestUrl = txIdsList.get(0);
-        return firstTxidFromLatestUrl;
+        firstTxIdFromLatestUrl = txIdsList.get(0);
+        return firstTxIdFromLatestUrl;
     }
 
 
@@ -76,7 +72,7 @@ public class ApiTest2Helper extends ApiHelperBase {
         List<String> listAddrs = new ArrayList<>();
         Thread.sleep(3000);
 
-        String header = "https://api.blockcypher.com/v1/btc/main/txs/" + firstTxidFromLatestUrl;
+        String header = "https://api.blockcypher.com/v1/btc/main/txs/" + firstTxIdFromLatestUrl;
         //System.out.println("header :" + header);
 
         String json = Request.Get(header)
@@ -101,8 +97,8 @@ public class ApiTest2Helper extends ApiHelperBase {
     }
 
 
-    public String getJsonAddress() throws IOException, InterruptedException, ParseException {
-        System.out.println();
+    public String getJsonAddress() throws IOException, InterruptedException {
+
         String header = "https://api.blockcypher.com/v1/btc/main/addrs/" + firstAddressFromList;
         Thread.sleep(2000);
         jsonAddress = Request.Get(header)
@@ -114,9 +110,8 @@ public class ApiTest2Helper extends ApiHelperBase {
     }
 
 
-    public Address getValuesFromAddressTop() throws ParseException, InterruptedException, IOException {
+    public Address getValuesFromAddressTop()  {
 
-        //System.out.println("jsonAddress in method getValuesFromAddressTop() " + jsonAddress);
         JsonParser jsonParser = new JsonParser();
 
         //FileReader file = new FileReader("src/test/resources/jsonHW2.json");
@@ -126,17 +121,16 @@ public class ApiTest2Helper extends ApiHelperBase {
                 new Gson().fromJson(parsed_1, new TypeToken<Address>(){}.getType());
         //System.out.println("addrs :" + addrs);
 
-        Address values_1 = new Address()
+        Address objAddressFromTop = new Address()
                 .withBalance(addrs.getBalance())
                 .withTotal_sent(addrs.getTotal_sent())
                 .withTotal_received(addrs.getTotal_received());
 
-        System.out.println("values_1 :" + values_1);
-        return values_1;
+        System.out.println("objAddressFromTop :" + objAddressFromTop);
+        return objAddressFromTop;
     }
 
-    public Address getValuesFromAddressArray() throws InterruptedException, ParseException, IOException {
-        //System.out.println("jsonAddress in method getValuesFromAddressArray() " + jsonAddress);
+    public Address getValuesFromAddressArray()  {
 
         //FileReader file = new FileReader("src/test/resources/jsonHW2.json");
 
@@ -146,45 +140,45 @@ public class ApiTest2Helper extends ApiHelperBase {
         JsonParser jsonParser = new JsonParser();
         JsonArray parsed_2 =  jsonParser.parse(json_2).getAsJsonObject().getAsJsonArray("txrefs");
 
-        List<Txrefs> txrefs = new Gson().fromJson(parsed_2, new TypeToken<List<Txrefs>>(){}.getType());
+        List<Txrefs> txRefs = new Gson().fromJson(parsed_2, new TypeToken<List<Txrefs>>(){}.getType());
         //System.out.println("txrefs :" + txrefs);
 
-        long sumValueFalse = 0;
-        long sumValueTrue = 0;
-        long sumValueNull = 0;
+        long sumValuesFalse = 0;
+        long sumValuesTrue = 0;
+//      long sumValuesNull = 0;
 
-        System.out.println("txrefs.size() :" + txrefs.size());
+        System.out.println("txrefs.size() :" + txRefs.size());
 
-        for(Txrefs i: txrefs) {
+        for(Txrefs i: txRefs) {
 
             String spent = i.getSpent();
 
             if(spent == null) {
-                System.out.println("null");
-                sumValueNull += i.getValue() ;
-                System.out.println(i.getValue());
+//                System.out.println("null");
+//                sumValuesNull += i.getValue() ;
+//                System.out.println(i.getValue());
             } else {
 
                 if (spent.equals("false")) {
-                    System.out.println("false :");
-                    sumValueFalse += i.getValue() ;
-                    System.out.println(i.getValue());
+//                  System.out.println("false :");
+                    sumValuesFalse += i.getValue() ;
+//                  System.out.println(i.getValue());
                 }
                 else  {
-                    System.out.println("true :");
-                    sumValueTrue += i.getValue();
-                    System.out.println(i.getValue());
+//                  System.out.println("true :");
+                    sumValuesTrue += i.getValue();
+//                  System.out.println(i.getValue());
                 }
             }
         }
 
-        Address values_2 = new Address()
-                .withTotal_received(sumValueFalse+sumValueTrue)
-                .withTotal_sent(sumValueTrue)
-                .withBalance(sumValueFalse);
+        Address objAddressFromArray = new Address()
+                .withTotal_received(sumValuesFalse + sumValuesTrue)
+                .withTotal_sent(sumValuesTrue)
+                .withBalance(sumValuesFalse);
 
-        System.out.println("values_2 :" + values_2);
-        return values_2;
+        System.out.println("objAddressFromArray :" + objAddressFromArray);
+        return objAddressFromArray;
     }
 
 }
