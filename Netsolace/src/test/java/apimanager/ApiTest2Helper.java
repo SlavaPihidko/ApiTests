@@ -23,6 +23,8 @@ public class ApiTest2Helper extends ApiHelperBase {
 
     String latest_url;
     String firstTxidFromLatestUrl;
+    String jsonAddress;
+    String firstAddressFromList;
 
 
     public String getLatest_url() throws IOException, InterruptedException, ParseException {
@@ -68,7 +70,7 @@ public class ApiTest2Helper extends ApiHelperBase {
     }
 
 
-    public List<String> getAddrsFromFirstTx() throws IOException, ParseException, InterruptedException {
+    public String getAddrsFromFirstTx() throws IOException, ParseException, InterruptedException {
 
         List<String> listAddrs = new ArrayList<>();
         Thread.sleep(3000);
@@ -93,27 +95,27 @@ public class ApiTest2Helper extends ApiHelperBase {
         }
 
         System.out.println("listAddrs :" + listAddrs);
-        return listAddrs;
+        firstAddressFromList = listAddrs.get(0);
+        return firstAddressFromList;
     }
 
 
-    public String jsonAddress() throws IOException, InterruptedException, ParseException {
-        String header = "https://api.blockcypher.com/v1/btc/main/addrs/" + getAddrsFromFirstTx().get(0);
+    public String getJsonAddress() throws IOException, InterruptedException, ParseException {
+        System.out.println();
+        String header = "https://api.blockcypher.com/v1/btc/main/addrs/" + firstAddressFromList;
         Thread.sleep(2000);
-        String json = Request.Get(header)
+        jsonAddress = Request.Get(header)
                 .addHeader("Content-Type", "application/json")
                 .execute().returnContent().asString();
 
-        return json;
+        return jsonAddress;
     }
 
 
     public Address getValuesFromAddressTop() throws ParseException, InterruptedException, IOException {
 
-        String json = jsonAddress();
-
         JsonParser jsonParser = new JsonParser();
-        JsonElement parsed_1 = jsonParser.parse(json);
+        JsonElement parsed_1 = jsonParser.parse(jsonAddress);
 
         Address addrs =
                 new Gson().fromJson(parsed_1, new TypeToken<Address>(){}.getType());
@@ -130,9 +132,7 @@ public class ApiTest2Helper extends ApiHelperBase {
 
     public Address getValuesFromAddressArray() throws InterruptedException, ParseException, IOException {
 
-        String json = jsonAddress();
-
-        String json_1 = json.replace("\"spent\": false","\"spent\": \"false\"");
+        String json_1 = jsonAddress.replace("\"spent\": false","\"spent\": \"false\"");
         String json_2 = json_1.replace("\"spent\": true","\"spent\": \"true\"");
 
         JsonParser jsonParser = new JsonParser();

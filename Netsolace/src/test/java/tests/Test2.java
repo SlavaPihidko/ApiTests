@@ -18,7 +18,8 @@ public class Test2 extends TestBase {
     public void test2() throws IOException, ParseException, InterruptedException {
         String latestUrl = am.getApiTest2Helper().getLatest_url();
         String firstTxIdFromLatestUrl = am.getApiTest2Helper().getFirstTxidsFromLatestUrl();
-        List<String> address = am.getApiTest2Helper().getAddrsFromFirstTx();
+        String address = am.getApiTest2Helper().getAddrsFromFirstTx();
+        String jsonAddress = am.getApiTest2Helper().getJsonAddress();
         Address valuesAddressFromTop = am.getApiTest2Helper().getValuesFromAddressTop();
         Address valuesAddressFromArray = am.getApiTest2Helper().getValuesFromAddressArray();
 
