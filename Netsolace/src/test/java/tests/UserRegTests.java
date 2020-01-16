@@ -69,7 +69,7 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
-    //FirstName
+  /*  //FirstName
     @Test // Registration check. FirstName is empty.
     public void checkUserReg_3_1() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName is empty.");
@@ -1226,6 +1226,6 @@ public class UserRegTests extends TestBase {
 
         assertEquals(statusCodeFromApi, (200));
     }
-
+*/
 }
 
