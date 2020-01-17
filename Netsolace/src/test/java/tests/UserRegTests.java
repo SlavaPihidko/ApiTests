@@ -69,7 +69,7 @@ public class UserRegTests extends TestBase {
         assertEquals(regResponseFromApi, regResponseExpected);
     }
 
-  /*  //FirstName
+    //FirstName
     @Test // Registration check. FirstName is empty.
     public void checkUserReg_3_1() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName is empty.");
@@ -96,7 +96,7 @@ public class UserRegTests extends TestBase {
         assertEquals(statusCodeFromApi, (400));
         assertEquals(regResponseFromApi, regResponseExpected);
     }
-
+/*
     @Test // Registration check. FirstName has 100 symbols
     public void checkUserReg_3_2() throws IOException, URISyntaxException {
         System.out.println("// Registration check. FirstName has 100 symbols");
