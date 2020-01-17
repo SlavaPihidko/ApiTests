@@ -31,6 +31,10 @@ tasks.withType(JavaCompile) {
 }
 
 test {
+    useTestNG ()
+}
+
+task UserReg(type: Test){
     useTestNG {
         suites 'src/test/resources/UserRegTestNG.xml'
     }
